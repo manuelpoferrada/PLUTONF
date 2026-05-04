@@ -1,9 +1,9 @@
-package es.franciscodelosrios.plutonf;
+package es.franciscodelosrios.plutonf.plutonf.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class PlutonfController {
     @FXML
     private Label welcomeText;
 

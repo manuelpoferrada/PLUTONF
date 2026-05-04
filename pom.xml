@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>es.franciscodelosrios.plutonf/es.franciscodelosrios.plutonf.HelloApplication
+                            <mainClass>es.franciscodelosrios.plutonf/es.franciscodelosrios.plutonf.plutonf.PlutonfApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
