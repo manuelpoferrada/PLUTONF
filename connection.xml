@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<connection>
+    <server>localhost</server>
+    <port>3307</port>
+    <dataBase>plutonf</dataBase>
+    <user>root</user>
+    <password>3103</password>
+</connection>

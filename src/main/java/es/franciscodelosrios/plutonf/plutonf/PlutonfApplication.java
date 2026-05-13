@@ -10,9 +10,9 @@ import java.io.IOException;
 public class PlutonfApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(PlutonfApplication.class.getResource("view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        FXMLLoader fxmlLoader = new FXMLLoader(PlutonfApplication.class.getResource("inicio.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 620, 420);
+        stage.setTitle("PLUTONF");
         stage.setScene(scene);
         stage.show();
     }
