@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="440.0" prefWidth="780.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.AcoplamientoController">
+    <children>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="Gestión de acoplamiento" />
+            </menus>
+        </MenuBar>
+        <GridPane hgap="20.0" prefHeight="410.0" prefWidth="780.0" vgap="10.0">
+            <padding>
+                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="360.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="360.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="35.0" prefHeight="45.0" />
+                <RowConstraints minHeight="260.0" prefHeight="280.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="45.0" prefHeight="55.0" />
+            </rowConstraints>
+            <children>
+                <Label text="Módulos disponibles" GridPane.halignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <Label text="Naves disponibles" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="16.0" />
+                    </font>
+                </Label>
+                <TableView fx:id="tablaModulosAcoplamiento" prefHeight="280.0" prefWidth="360.0" GridPane.rowIndex="1">
+                    <columns>
+                        <TableColumn fx:id="colIdModuloAcoplamiento" prefWidth="60.0" text="ID" />
+                        <TableColumn fx:id="colNombreModuloAcoplamiento" prefWidth="150.0" text="Nombre" />
+                        <TableColumn fx:id="colSectorModuloAcoplamiento" prefWidth="130.0" text="Sector" />
+                    </columns>
+                </TableView>
+                <TableView fx:id="tablaNavesAcoplamiento" prefHeight="280.0" prefWidth="360.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <columns>
+                        <TableColumn fx:id="colIdNaveAcoplamiento" prefWidth="60.0" text="ID" />
+                        <TableColumn fx:id="colNombreNaveAcoplamiento" prefWidth="150.0" text="Nombre" />
+                        <TableColumn fx:id="colEstadoNaveAcoplamiento" prefWidth="130.0" text="Estado" />
+                    </columns>
+                </TableView>
+                <Button fx:id="btnAcoplar" mnemonicParsing="false" onAction="#acoplarModulo" prefHeight="30.0" prefWidth="90.0" text="Acoplar" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                    <GridPane.margin>
+                        <Insets right="20.0" />
+                    </GridPane.margin>
+                </Button>
+                <Button fx:id="btnDesacoplar" mnemonicParsing="false" onAction="#desacoplarModulo" prefHeight="30.0" prefWidth="100.0" text="Desacoplar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
+                    <GridPane.margin>
+                        <Insets left="20.0" />
+                    </GridPane.margin>
+                </Button>
+                <Button fx:id="btnVolverAcoplamiento" mnemonicParsing="false" onAction="#volverModulos" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Label prefHeight="37.0" prefWidth="18.0" text="⇆" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
+            </children>
+        </GridPane>
+    </children>
+</VBox>

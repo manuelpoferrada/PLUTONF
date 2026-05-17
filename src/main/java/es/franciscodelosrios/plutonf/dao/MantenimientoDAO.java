@@ -102,7 +102,7 @@ public class MantenimientoDAO {
      * @return objeto mantenimiento
      * @throws SQLException
      */
-    private static Mantenimiento findByDescripcion(String descripcion) throws SQLException {
+    public static Mantenimiento findByDescripcion(String descripcion) throws SQLException {
         Mantenimiento mantenimiento = null;
         try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_FIND_BY_DESC)) {
             ps.setString(1, descripcion);

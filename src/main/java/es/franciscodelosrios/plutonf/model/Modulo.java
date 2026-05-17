@@ -96,4 +96,13 @@ public abstract class Modulo {
     public void setNave(Nave nave) {
         this.nave = nave;
     }
+
+    /**
+     * String para que pueda aparecer en tablas ajenas y no de error
+     * @return idModulo y su nombre
+     */
+    @Override
+    public String toString() {
+        return idModulo + " - " + nombre;
+    }
 }

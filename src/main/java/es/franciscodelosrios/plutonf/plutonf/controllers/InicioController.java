@@ -49,7 +49,7 @@ public class InicioController {
      */
     @FXML
     public void abrirCrearMision(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(PlutonfApplication.class.getResource("/es/franciscodelosrios/plutonf/crearMision.fxml"));
+        FXMLLoader loader = new FXMLLoader(PlutonfApplication.class.getResource("/es/franciscodelosrios/plutonf/plutonf/mision.fxml"));
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) btnCrearMisionInicio.getScene().getWindow();
         stage.setScene(scene);
@@ -63,7 +63,7 @@ public class InicioController {
      */
     @FXML
     public void abrirGestionar(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(PlutonfApplication.class.getResource("/es/franciscodelosrios/plutonf/gestionar.fxml"));
+        FXMLLoader loader = new FXMLLoader(PlutonfApplication.class.getResource("/es/franciscodelosrios/plutonf/plutonf/gestionar.fxml"));
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) btnGestionarInicio.getScene().getWindow();
         stage.setScene(scene);

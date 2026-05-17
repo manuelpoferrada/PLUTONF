@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,15 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.NavesController">
     <children>
         <MenuBar>
             <menus>
-                <Menu mnemonicParsing="false" text="Archivo">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Salir" />
-                    </items>
-                </Menu>
+                <Menu mnemonicParsing="false" text="Nave" />
             </menus>
         </MenuBar>
         <GridPane hgap="20.0" prefHeight="410.0" prefWidth="850.0" vgap="10.0">
@@ -78,8 +73,8 @@
                         <TextField fx:id="txtCombustibleNave" promptText="Ej: 80" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="txtFechaNave" promptText="Ej: 2026-05-12" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="txtEstadoNave" promptText="Ej: Operativa" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Button fx:id="btnGuardarNave" mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <Button fx:id="btnLimpiarNave" mnemonicParsing="false" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                        <Button fx:id="btnGuardarNave" mnemonicParsing="false" onAction="#guardarNave" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                        <Button fx:id="btnLimpiarNave" mnemonicParsing="false" onAction="#limpiarNave" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets right="30.0" />
                      </GridPane.margin></Button>
@@ -90,6 +85,9 @@
                         <TableColumn fx:id="colIdNave" prefWidth="60.0" text="ID" />
                         <TableColumn fx:id="colNombreNave" prefWidth="120.0" text="Nombre" />
                         <TableColumn fx:id="colEstadoNave" prefWidth="110.0" text="Estado" />
+                        <TableColumn fx:id="colAlcanceNave" prefWidth="90.0" text="Alcance" />
+                        <TableColumn fx:id="colCombustibleNave" prefWidth="100.0" text="Combustible" />
+                        <TableColumn fx:id="colFechaNave" prefWidth="110.0" text="Fecha" />
                     </columns>
                 </TableView>
                 <GridPane hgap="10.0" vgap="12.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -106,22 +104,22 @@
                     </rowConstraints>
                     <children>
                         <TextField fx:id="txtBuscarIdNave" promptText="Buscar por ID" />
-                        <Button fx:id="btnBuscarIdNave" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
+                        <Button fx:id="btnBuscarIdNave" mnemonicParsing="false" onAction="#buscarPorId" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
                         <TextField fx:id="txtBuscarNombreNave" promptText="Buscar nombre" GridPane.rowIndex="1" />
-                        <Button fx:id="btnBuscarNombreNave" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="btnBuscarNombreNave" mnemonicParsing="false" onAction="#buscarPorId" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
-                <Button fx:id="btnEliminarNave" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnEliminarNave" mnemonicParsing="false" onAction="#eliminarNave" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets right="90.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnActualizarNave" mnemonicParsing="false" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnActualizarNave" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="100.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnVolverNave" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                <Button fx:id="btnVolverNave" mnemonicParsing="false" onAction="#volverGestionar" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>

@@ -11,7 +11,7 @@ public class PlutonfApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(PlutonfApplication.class.getResource("inicio.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 620, 420);
+        Scene scene = new Scene(fxmlLoader.load(), 700, 500);
         stage.setTitle("PLUTONF");
         stage.setScene(scene);
         stage.show();

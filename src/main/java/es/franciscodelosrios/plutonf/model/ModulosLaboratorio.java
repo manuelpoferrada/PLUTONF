@@ -40,14 +40,38 @@ public class ModulosLaboratorio extends Modulo implements Acoplable{
         this.numExperimentos = numExperimentos;
     }
 
+    /**
+     * Metodo que acopla un modulo a una nave
+     * @param nuevaNave La nave de destino
+     * @return
+     */
     @Override
     public boolean acoplarA(Nave nuevaNave) {
-        return false;
+        boolean acoplado = false;
+
+        if (nuevaNave != null) {
+            this.nave = nuevaNave;
+            acoplado = true;
+        }
+
+        return acoplado;
     }
 
+    /**
+     * Metodo que devuelve si se ha acoplado correctamente un modulo a una nave
+     * @param nave
+     * @return
+     */
     @Override
-    public Nave desacoplar() {
-        Nave navePrevia = null;
-        return navePrevia;
+    public boolean desacoplar(Nave nave) {
+
+        boolean desacoplado = false;
+
+        if (this.nave != null && this.nave.equals(nave)) {
+            this.nave = null;
+            desacoplado = true;
+        }
+
+        return desacoplado;
     }
 }

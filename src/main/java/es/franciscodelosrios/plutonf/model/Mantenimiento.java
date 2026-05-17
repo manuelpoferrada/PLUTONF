@@ -77,4 +77,13 @@ public class Mantenimiento {
     public void setHerramientaNecesaria(String herramientaNecesaria) {
         this.herramientaNecesaria = herramientaNecesaria;
     }
+
+    /**
+     * String para que pueda aparecer en tablas ajenas y no de error
+     * @return descripcion y su idMantenimiento
+     */
+    @Override
+    public String toString() {
+        return idMantenimiento  + " - " + descripcion;
+    }
 }

@@ -52,15 +52,15 @@
             </Label>
             <ImageView fitHeight="75.0" fitWidth="120.0" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                 <image>
-                    <Image url="@../../../../../../../../../Documents/1%20DAM/3%20TRIMESTRE/PROGRAMACION/logo.png" />
+                    <Image url="@img/logo.png" />
                 </image>
             </ImageView>
-            <Button fx:id="btnCrearMisionInicio" mnemonicParsing="false" prefHeight="95.0" prefWidth="240.0" text="CREAR MISIÓN" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="btnCrearMisionInicio" mnemonicParsing="false" onAction="#abrirCrearMision" prefHeight="95.0" prefWidth="240.0" text="CREAR MISIÓN" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
             </Button>
-            <Button fx:id="btnGestionarInicio" mnemonicParsing="false" prefHeight="95.0" prefWidth="240.0" text="GESTIONAR" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="btnGestionarInicio" mnemonicParsing="false" onAction="#abrirGestionar" prefHeight="95.0" prefWidth="240.0" text="GESTIONAR" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
@@ -75,7 +75,7 @@
                     <Font size="12.0" />
                 </font>
             </Label>
-            <Button fx:id="btnSalirInicio" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Salir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <Button fx:id="btnSalirInicio" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="30.0" prefWidth="90.0" text="Salir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                 <GridPane.margin>
                     <Insets right="20.0" />
                 </GridPane.margin>

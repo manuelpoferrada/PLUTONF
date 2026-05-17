@@ -102,7 +102,7 @@ public class NaveDAO {
      * @return devuelve el ojbeto de nave
      * @throws SQLException
      */
-    private static Nave findByName(String nombre) throws SQLException {
+    public static Nave findByName(String nombre) throws SQLException {
         Nave nave = null;
         try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_FIND_BY_NAME)) {
             ps.setString(1, nombre);

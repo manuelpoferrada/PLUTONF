@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="420.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="420.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.GestionarController">
     <children>
         <MenuBar>
             <menus>
@@ -21,11 +21,11 @@
                         <MenuItem mnemonicParsing="false" text="Salir" />
                     </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Ayuda">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Acerca de" />
-                    </items>
-                </Menu>
+            <Menu mnemonicParsing="false" text="Info. Vetana">
+               <items>
+                   <MenuItem fx:id="itemInfoVentana" mnemonicParsing="false" onAction="#mostrarInformacionVentana" text="Info. Vetana" />
+               </items>
+            </Menu>
             </menus>
         </MenuBar>
         <GridPane alignment="CENTER" hgap="25.0" prefHeight="385.0" prefWidth="620.0" vgap="20.0">
@@ -49,32 +49,32 @@
                         <Font name="System Bold" size="18.0" />
                     </font>
                 </Label>
-                <Button fx:id="btnGestionMisiones" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" text="MISIÓN" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="btnGestionMisiones" mnemonicParsing="false" onAction="#abrirMision" prefHeight="45.0" prefWidth="150.0" text="MISIÓN" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnGestionNaves" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" text="NAVES" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="btnGestionNaves" mnemonicParsing="false" onAction="#abrirNaves" prefHeight="45.0" prefWidth="150.0" text="NAVES" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnGestionModulos" mnemonicParsing="false" prefHeight="45.0" prefWidth="170.0" text="MÓDULOS" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+                <Button fx:id="btnGestionModulos" mnemonicParsing="false" onAction="#abrirModulos" prefHeight="45.0" prefWidth="170.0" text="MÓDULOS" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnGestionAstronautas" mnemonicParsing="false" prefHeight="45.0" prefWidth="150.0" text="ASTRONAUTA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnGestionAstronautas" mnemonicParsing="false" onAction="#abrirAstronautas" prefHeight="45.0" prefWidth="150.0" text="ASTRONAUTA" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnGestionMantenimiento" mnemonicParsing="false" prefHeight="45.0" prefWidth="170.0" text="MANTENIMIENTO" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnGestionMantenimiento" mnemonicParsing="false" onAction="#abrirMantenimiento" prefHeight="45.0" prefWidth="170.0" text="MANTENIMIENTO" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <font>
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnVolverGestionar" mnemonicParsing="false" prefHeight="14.0" prefWidth="65.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />            </children>
+                <Button fx:id="btnVolverGestionar" mnemonicParsing="false" onAction="#volverInicio" prefHeight="14.0" prefWidth="65.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />            </children>
         </GridPane>
     </children>
 </VBox>

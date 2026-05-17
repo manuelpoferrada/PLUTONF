@@ -110,7 +110,7 @@ public class MisionDAO {
      * @return devuelve el objeto de mision
      * @throws SQLException
      */
-    private static Mision findByPlaneta(String nombrePlaneta) throws SQLException {
+    public static Mision findByPlaneta(String nombrePlaneta) throws SQLException {
         Mision mision = null;
         try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_FIND_BY_PLANETA)) {
             ps.setString(1, nombrePlaneta);

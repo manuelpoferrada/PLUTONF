@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,15 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.AstronautaController">
     <children>
         <MenuBar>
             <menus>
-                <Menu mnemonicParsing="false" text="Archivo">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Salir" />
-                    </items>
-                </Menu>
+                <Menu mnemonicParsing="false" text="Astronauta" />
             </menus>
         </MenuBar>
         <GridPane hgap="20.0" prefHeight="410.0" prefWidth="850.0" vgap="10.0">
@@ -78,8 +73,8 @@
                         <TextField fx:id="txtHabilidadAstronauta" promptText="Ej: Piloto" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="txtRangoAstronauta" promptText="Ej: Comandante" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="txtIdModuloAstronauta" promptText="Ej: 1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Button fx:id="btnGuardarAstronauta" mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <Button fx:id="btnLimpiarAstronauta" mnemonicParsing="false" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                        <Button fx:id="btnGuardarAstronauta" mnemonicParsing="false" onAction="#guardarAstronauta" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                        <Button fx:id="btnLimpiarAstronauta" mnemonicParsing="false" onAction="#limpiarAstronauta" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                      <GridPane.margin>
                         <Insets right="30.0" />
                      </GridPane.margin></Button>
@@ -90,6 +85,8 @@
                         <TableColumn fx:id="colIdAstronauta" prefWidth="60.0" text="ID" />
                         <TableColumn fx:id="colNombreAstronauta" prefWidth="120.0" text="Nombre" />
                         <TableColumn fx:id="colRangoAstronauta" prefWidth="110.0" text="Rango" />
+                        <TableColumn fx:id="colDniAstronauta" prefWidth="90.0" text="DNI" />
+                        <TableColumn fx:id="colHabilidadAstronauta" prefWidth="100.0" text="Habilidad" />
                     </columns>
                 </TableView>
                 <GridPane hgap="10.0" vgap="12.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -102,23 +99,23 @@
                     </columnConstraints>
                     <children>
                         <TextField fx:id="txtBuscarIdAstronauta" promptText="Buscar por ID" />
-                        <Button fx:id="btnBuscarIdAstronauta" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
+                        <Button fx:id="btnBuscarIdAstronauta" mnemonicParsing="false" onAction="#buscarPorId" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
                     </children>
                <rowConstraints>
                   <RowConstraints />
                </rowConstraints>
                 </GridPane>
-                <Button fx:id="btnEliminarAstronauta" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnEliminarAstronauta" mnemonicParsing="false" onAction="#eliminarAstronauta" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets right="90.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnActualizarAstronauta" mnemonicParsing="false" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnActualizarAstronauta" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="100.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnVolverAstronauta" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                <Button fx:id="btnVolverAstronauta" mnemonicParsing="false" onAction="#volverGesionar" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>

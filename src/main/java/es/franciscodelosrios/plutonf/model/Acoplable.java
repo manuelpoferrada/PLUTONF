@@ -1,16 +1,18 @@
 package es.franciscodelosrios.plutonf.model;
 
 public interface Acoplable {
+
     /**
-     * Permite cambiar el módulo de una nave a otra
-     * @param nuevaNave La nave de destino
-     * @return verdadero si el acoplamiento se puede hacer
+     * Permite acoplar el modulo a otra nave
+     * @param nuevaNave
+     * @return true si se ha podido acoplar
      */
     boolean acoplarA(Nave nuevaNave);
 
     /**
-     * Desvincula el módulo de su nave actual
-     * @return La nave de la que se ha desacoplado
+     * Desacopla el modulo de una nave
+     * @param nave
+     * @return true si se ha desacoplado correctamente
      */
-    Nave desacoplar();
+    boolean desacoplar(Nave nave);
 }

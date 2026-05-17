@@ -85,4 +85,13 @@ public class Nave {
     public void setEstadoNave(String estadoNave) {
         this.estadoNave = estadoNave;
     }
+
+    /**
+     * Mostramos una nave, ayuda para cuando mostramos un ID y nombre del nave en una tabla que no es suya
+     * @return
+     */
+    @Override
+    public String toString() {
+        return idNave + " - " + nombre;
+    }
 }

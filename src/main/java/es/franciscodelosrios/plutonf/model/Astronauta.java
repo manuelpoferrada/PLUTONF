@@ -109,4 +109,13 @@ public class Astronauta {
     public void setModulo(Modulo modulo) {
         this.modulo = modulo;
     }
+
+    /**
+     * String para que pueda aparecer en tablas ajenas y no de error
+     * @return idAstronauta  y su nombre
+     */
+    @Override
+    public String toString() {
+        return idAstronauta   + " - " + nombre;
+    }
 }

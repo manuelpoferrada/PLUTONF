@@ -5,7 +5,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -15,15 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.MisionController">
     <children>
         <MenuBar>
             <menus>
-                <Menu mnemonicParsing="false" text="Archivo">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Salir" />
-                    </items>
-                </Menu>
+                <Menu mnemonicParsing="false" text="Misión" />
             </menus>
         </MenuBar>
         <GridPane hgap="20.0" prefHeight="410.0" prefWidth="850.0" vgap="10.0">
@@ -72,8 +67,8 @@
                         <TextField fx:id="txtIdNaveMision" promptText="Ej: 1" GridPane.columnIndex="1" />
                         <TextField fx:id="txtPlanetaMision" promptText="Ej: Marte" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="txtObjetivoMision" promptText="Ej: Explorar superficie" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <Button fx:id="btnGuardarMision" mnemonicParsing="false" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
-                        <Button fx:id="btnLimpiarMision" mnemonicParsing="false" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+                        <Button fx:id="btnGuardarMision" mnemonicParsing="false" onAction="#guardarMision" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+                        <Button fx:id="btnLimpiarMision" mnemonicParsing="false" onAction="#limpiarMision" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
                      <GridPane.margin>
                         <Insets right="30.0" />
                      </GridPane.margin></Button>
@@ -84,6 +79,7 @@
                         <TableColumn fx:id="colIdMision" prefWidth="60.0" text="ID" />
                         <TableColumn fx:id="colPlanetaMision" prefWidth="110.0" text="Planeta" />
                         <TableColumn fx:id="colObjetivoMision" prefWidth="120.0" text="Objetivo" />
+                        <TableColumn fx:id="colIdNaveMision" prefWidth="80.0" text="ID Nave" />
                     </columns>
                 </TableView>
                 <GridPane hgap="10.0" vgap="12.0" GridPane.columnIndex="2" GridPane.rowIndex="1" GridPane.valignment="TOP">
@@ -100,22 +96,22 @@
                     </rowConstraints>
                     <children>
                         <TextField fx:id="txtBuscarIdMision" promptText="Buscar por ID" />
-                        <Button fx:id="btnBuscarIdMision" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
+                        <Button fx:id="btnBuscarIdMision" mnemonicParsing="false" onAction="#buscarPorId" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
                         <TextField fx:id="txtBuscarPlanetaMision" promptText="Buscar planeta" GridPane.rowIndex="1" />
-                        <Button fx:id="btnBuscarPlanetaMision" mnemonicParsing="false" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="btnBuscarPlanetaMision" mnemonicParsing="false" onAction="#buscarPorPlaneta" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
-                <Button fx:id="btnEliminarMision" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnEliminarMision" mnemonicParsing="false" onAction="#eliminarMision" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets right="90.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnActualizarMision" mnemonicParsing="false" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnActualizarMision" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="100.0" />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnVolverMision" mnemonicParsing="false" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                <Button fx:id="btnVolverMision" mnemonicParsing="false" onAction="#volverGestionar" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>
