@@ -74,7 +74,12 @@
                         <Font name="System Bold" size="13.0" />
                     </font>
                 </Button>
-                <Button fx:id="btnVolverGestionar" mnemonicParsing="false" onAction="#volverInicio" prefHeight="14.0" prefWidth="65.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />            </children>
+                <Button fx:id="btnVolverGestionar" mnemonicParsing="false" onAction="#volverInicio" prefHeight="14.0" prefWidth="65.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+            <Button fx:id="btnAbrirRelaciones" mnemonicParsing="false" onAction="#abrirRelaciones" prefHeight="26.0" prefWidth="181.0" text="Ver las consultas relacionales" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+               <font>
+                  <Font name="System Bold Italic" size="10.0" />
+               </font>
+            </Button>            </children>
         </GridPane>
     </children>
 </VBox>

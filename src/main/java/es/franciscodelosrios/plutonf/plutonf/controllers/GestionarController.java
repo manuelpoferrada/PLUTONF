@@ -31,6 +31,10 @@ public class GestionarController {
     @FXML
     private Button btnVolverGestionar;
 
+    @FXML
+    private Button btnAbrirRelaciones;
+
+
     /**
      * Metodo que abre la ventana de misiones
      * @param event
@@ -125,6 +129,21 @@ public class GestionarController {
         );
 
         alerta.showAndWait();
+    }
+
+    /**
+     * Abre la ventana de relaciones
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    public void abrirRelaciones(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(PlutonfApplication.class.getResource("/es/franciscodelosrios/plutonf/plutonf/relaciones.fxml"));
+        Scene scene = new Scene(loader.load());
+
+        Stage stage = (Stage) btnAbrirRelaciones.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
 }

@@ -77,7 +77,12 @@
                                 <Font size="13.0" />
                             </font>
                         </Label>
-                        <Label text="Herramienta:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                        <Label text="Duración:" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
+                        </Label>
+                        <Label text="Herramienta:" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
                             <font>
                                 <Font size="13.0" />
                             </font>
@@ -85,9 +90,10 @@
                         <TextField fx:id="txtDescripcionMantenimiento" promptText="Ej: Revisión de oxígeno" GridPane.columnIndex="1" />
                         <TextField fx:id="txtPrioridadMantenimiento" promptText="Ej: ALTA" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="txtCosteMantenimiento" promptText="Ej: 150" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtHerramientaMantenimiento" promptText="Ej: Llave espacial" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Button fx:id="btnGuardarMantenimiento" mnemonicParsing="false" onAction="#guardarMantenimiento" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <Button fx:id="btnLimpiarMantenimiento" mnemonicParsing="false" onAction="#limpiarMantenimiento" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                        <TextField fx:id="txtDuracionMantenimiento" promptText="Ej: 2 horas" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <TextField fx:id="txtHerramientaMantenimiento" promptText="Ej: Llave espacial" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Button fx:id="btnGuardarMantenimiento" mnemonicParsing="false" onAction="#guardarMantenimiento" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
+                        <Button fx:id="btnLimpiarMantenimiento" mnemonicParsing="false" onAction="#limpiarMantenimiento" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
                             <GridPane.margin>
                                 <Insets right="30.0" />
                             </GridPane.margin>

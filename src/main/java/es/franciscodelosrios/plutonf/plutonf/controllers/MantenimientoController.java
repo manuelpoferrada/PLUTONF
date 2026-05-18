@@ -66,6 +66,9 @@ public class MantenimientoController {
     @FXML
     private TableColumn<Mantenimiento, String> colHerramientaMantenimiento;
 
+    @FXML
+    private TextField txtDuracionMantenimiento;
+
     /**
      * Metodo que se inicia la abrir la ventana
      */
@@ -86,7 +89,7 @@ public class MantenimientoController {
      */
     @FXML
     public void limpiarMantenimiento(ActionEvent event) {
-        Utils.limpiarCampos(txtDescripcionMantenimiento, txtPrioridadMantenimiento, txtCosteMantenimiento, txtHerramientaMantenimiento);
+        Utils.limpiarCampos(txtDescripcionMantenimiento, txtPrioridadMantenimiento, txtCosteMantenimiento, txtDuracionMantenimiento, txtHerramientaMantenimiento);
     }
 
     /**
@@ -96,25 +99,24 @@ public class MantenimientoController {
     @FXML
     public void guardarMantenimiento(ActionEvent event) {
         try {
-            if (Utils.campoVacio(txtDescripcionMantenimiento) || Utils.campoVacio(txtPrioridadMantenimiento) || Utils.campoVacio(txtCosteMantenimiento) || Utils.campoVacio(txtHerramientaMantenimiento)) {
+            if (Utils.campoVacio(txtDescripcionMantenimiento) || Utils.campoVacio(txtPrioridadMantenimiento) || Utils.campoVacio(txtCosteMantenimiento) || Utils.campoVacio(txtDuracionMantenimiento) || Utils.campoVacio(txtHerramientaMantenimiento)) {
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
             } else {
                 double coste = Utils.convertirDouble(txtCosteMantenimiento.getText());
-
                 if (coste == -1) {
                     Utils.mostrarError("Error", "El coste debe ser un número.");
                 } else {
-                    Prioridad prioridad = Prioridad.valueOf(txtPrioridadMantenimiento.getText().toUpperCase());
-
+                    Prioridad prioridad = Prioridad.valueOf(
+                            txtPrioridadMantenimiento.getText().toUpperCase()
+                    );
                     Mantenimiento mantenimiento = new Mantenimiento(
                             0,
                             txtDescripcionMantenimiento.getText(),
                             prioridad,
                             coste,
-                            "No indicada",
+                            txtDuracionMantenimiento.getText(),
                             txtHerramientaMantenimiento.getText()
                     );
-
                     if (MantenimientoDAO.addMantenimiento(mantenimiento)) {
                         Utils.mostrarMensaje("Información", "Mantenimiento guardado correctamente.");
                         limpiarMantenimiento(event);
