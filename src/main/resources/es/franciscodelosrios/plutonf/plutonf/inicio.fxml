@@ -14,7 +14,11 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="420.0" prefWidth="620.0" spacing="20.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.InicioController">
+<VBox prefHeight="440.0" prefWidth="850.0"
+      xmlns="http://javafx.com/javafx/25"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.InicioController"
+      stylesheets="@../../../../css/estilos.css">
     <MenuBar>
         <menus>
             <Menu mnemonicParsing="false" text="Archivo">
