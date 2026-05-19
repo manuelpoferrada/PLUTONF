@@ -18,7 +18,7 @@ public class AstronautaDAO {
     private static final String SQL_DELETE = "DELETE FROM astronautas WHERE idAstronauta = ?";
 
     /**
-     * Buscamos todos los astronautas de la base de datos
+     * Metodo que busca todos los astronautas de la base de datos
      * @return lista de astronautas
      * @throws SQLException
      */
@@ -53,7 +53,7 @@ public class AstronautaDAO {
     }
 
     /**
-     * Buscamos un astronauta por su id
+     * Metodo EAGER que busca los astronauta por su id
      * @param idAstronauta
      * @return el objeto astronauta
      * @throws SQLException
@@ -87,7 +87,6 @@ public class AstronautaDAO {
 
     /**
      * Metodo que se encarga de añadir un astronauta
-     *
      * @param astronauta
      * @return el Astronauta que ha añadido, si no añade ninguno devuelve null
      * @throws SQLException
@@ -121,7 +120,7 @@ public class AstronautaDAO {
     }
 
     /**
-     * Buscamos por el DNI a un astronauta
+     * Es un metodo EAGER por el DNI a un astronauta
      * @param dni
      * @return devuelve el objeto astronauta
      * @throws SQLException

@@ -81,6 +81,19 @@ public class NavesController {
         colCombustibleNave.setCellValueFactory(new PropertyValueFactory<Nave, Double>("combustibleActual"));
         colFechaNave.setCellValueFactory(new PropertyValueFactory<Nave, Date>("fechaLanzamiento"));
         cargarNaves();
+
+        // Accedemos al sistema de selección de la tabla
+        tablaNaves.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        txtNombreNave.setText(newValue.getNombre());
+                        txtAlcanceNave.setText(String.valueOf(newValue.getAlcance()));
+                        txtCombustibleNave.setText(String.valueOf(newValue.getCombustibleActual()));
+                        txtFechaNave.setText(String.valueOf(newValue.getFechaLanzamiento()));
+                        txtEstadoNave.setText(newValue.getEstadoNave());
+                    }
+                });
     }
 
     /**
@@ -253,4 +266,60 @@ public class NavesController {
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * Actualiza la nave seleccionada en la tabla
+     * @param event
+     */
+    @FXML
+    public void actualizarNave(ActionEvent event) {
+        try {
+            Nave naveSeleccionada = tablaNaves.getSelectionModel().getSelectedItem();
+
+            if (naveSeleccionada == null) {
+                Utils.mostrarError("Error", "Debe seleccionar una nave.");
+            } else if (Utils.campoVacio(txtNombreNave)
+                    || Utils.campoVacio(txtAlcanceNave)
+                    || Utils.campoVacio(txtCombustibleNave)
+                    || Utils.campoVacio(txtFechaNave)
+                    || Utils.campoVacio(txtEstadoNave)) {
+
+                Utils.mostrarError("Error", "Debe rellenar todos los campos.");
+
+            } else {
+                double alcance = Utils.convertirDouble(txtAlcanceNave.getText());
+                double combustible = Utils.convertirDouble(txtCombustibleNave.getText());
+
+                if (alcance == -1 || combustible == -1) {
+                    Utils.mostrarError("Error", "El alcance y el combustible deben ser números.");
+                } else {
+                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+                    Date fecha = formato.parse(txtFechaNave.getText());
+
+                    Nave naveNueva = new Nave(
+                            naveSeleccionada.getIdNave(),
+                            txtNombreNave.getText(),
+                            alcance,
+                            combustible,
+                            fecha,
+                            txtEstadoNave.getText()
+                    );
+
+                    if (NaveDAO.updateNave(naveNueva, naveSeleccionada)) {
+                        Utils.mostrarMensaje("Información", "Nave actualizada correctamente.");
+                        limpiarNave(event);
+                        cargarNaves();
+                    } else {
+                        Utils.mostrarError("Error", "No se ha podido actualizar la nave.");
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "Error al actualizar la nave.");
+        } catch (ParseException e) {
+            Utils.mostrarError("Error", "La fecha debe tener el formato yyyy-MM-dd.");
+        }
+    }
+
 }

@@ -66,6 +66,19 @@ public class MisionController {
         colObjetivoMision.setCellValueFactory(new PropertyValueFactory<Mision, String>("objetivo"));
         colIdNaveMision.setCellValueFactory(new PropertyValueFactory<Mision, Nave>("nave"));
         cargarMisiones();
+
+        // Accedemos al sistema de selección de la tabla
+        tablaMisiones.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        txtPlanetaMision.setText(newValue.getNombrePlaneta());
+                        txtObjetivoMision.setText(newValue.getObjetivo());
+                        txtIdNaveMision.setText(
+                                String.valueOf(newValue.getNave().getIdNave())
+                        );
+                    }
+                });
     }
 
     /**
@@ -220,5 +233,56 @@ public class MisionController {
         Stage stage = (Stage) btnVolverMision.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    /**
+     * Actualiza la misión seleccionada en la tabla
+     * @param event
+     */
+    @FXML
+    public void actualizarMision(ActionEvent event) {
+        try {
+            Mision misionSeleccionada = tablaMisiones.getSelectionModel().getSelectedItem();
+
+            if (misionSeleccionada == null) {
+                Utils.mostrarError("Error", "Debe seleccionar una misión.");
+            } else if (Utils.campoVacio(txtIdNaveMision)
+                    || Utils.campoVacio(txtPlanetaMision)
+                    || Utils.campoVacio(txtObjetivoMision)) {
+
+                Utils.mostrarError("Error", "Debe rellenar todos los campos.");
+
+            } else {
+                int idNave = Utils.convertirEntero(txtIdNaveMision.getText());
+
+                if (idNave == -1) {
+                    Utils.mostrarError("Error", "El ID de la nave debe ser un número.");
+                } else {
+                    Nave nave = NaveDAO.findById(idNave);
+
+                    if (nave == null) {
+                        Utils.mostrarError("Error", "No existe una nave con ese ID.");
+                    } else {
+                        Mision misionNueva = new Mision(
+                                misionSeleccionada.getIdMision(),
+                                txtPlanetaMision.getText(),
+                                txtObjetivoMision.getText(),
+                                nave
+                        );
+
+                        if (MisionDAO.updateMision(misionNueva, misionSeleccionada)) {
+                            Utils.mostrarMensaje("Información", "Misión actualizada correctamente.");
+                            limpiarMision(event);
+                            cargarMisiones();
+                        } else {
+                            Utils.mostrarError("Error", "No se ha podido actualizar la misión.");
+                        }
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "Error al actualizar la misión.");
+        }
     }
 }

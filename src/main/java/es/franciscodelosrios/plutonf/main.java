@@ -6,6 +6,9 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 
+// PARA AGILIZAR EL PROYECTO HE CREADO UN MAIN CON IA, ASI PUEDO PROBAR MIS DAO DE FORMA MÁS RÁPIDA Y ANTES
+// PUEDO EMPEZAR CON INTERFAZ Y CONTROLADORES
+
 public class main {
 
     public static void main(String[] args) {

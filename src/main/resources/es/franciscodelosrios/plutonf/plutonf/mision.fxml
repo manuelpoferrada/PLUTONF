@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="440.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.MisionController" stylesheets="@../../../../css/estilos.css">
+<VBox prefHeight="440.0" prefWidth="850.0" stylesheets="@../../../../css/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.MisionController">
     <children>
         <MenuBar>
             <menus>
@@ -103,15 +103,16 @@
                 </GridPane>
                 <Button fx:id="btnEliminarMision" mnemonicParsing="false" onAction="#eliminarMision" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
-                        <Insets right="90.0" />
+                        <Insets />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnActualizarMision" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnActualizarMision" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets left="100.0" />
                     </GridPane.margin>
                 </Button>
                 <Button fx:id="btnVolverMision" mnemonicParsing="false" onAction="#volverGestionar" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+            <Button fx:id="btnActualizarMisionDeLaTabla" mnemonicParsing="false" onAction="#actualizarMision" prefHeight="30.0" prefWidth="90.0" text="Guar. Actualización" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             </children>
         </GridPane>
     </children>

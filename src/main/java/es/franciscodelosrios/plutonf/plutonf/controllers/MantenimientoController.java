@@ -81,6 +81,19 @@ public class MantenimientoController {
         colDuracionMantenimiento.setCellValueFactory(new PropertyValueFactory<Mantenimiento, String>("duracionEntidad"));
         colHerramientaMantenimiento.setCellValueFactory(new PropertyValueFactory<Mantenimiento, String>("herramientaNecesaria"));
         cargarMantenimientos();
+
+        // Accedemos al sistema de selección de la tabla
+        tablaMantenimientos.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null) {
+                        txtDescripcionMantenimiento.setText(newValue.getDescripcion());
+                        txtPrioridadMantenimiento.setText(String.valueOf(newValue.getPrioridad()));
+                        txtCosteMantenimiento.setText(String.valueOf(newValue.getCosteRecursos()));
+                        txtDuracionMantenimiento.setText(newValue.getDuracionEntidad());
+                        txtHerramientaMantenimiento.setText(newValue.getHerramientaNecesaria());
+                    }
+                });
     }
 
     /**
@@ -266,5 +279,58 @@ public class MantenimientoController {
         Stage stage = (Stage) btnIntervenciones.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
+    }
+
+    /**
+     * Actualiza el mantenimiento seleccionado en la tabla
+     * @param event
+     */
+    @FXML
+    public void actualizarMantenimiento(ActionEvent event) {
+        try {
+            Mantenimiento mantenimientoSeleccionado = tablaMantenimientos.getSelectionModel().getSelectedItem();
+
+            if (mantenimientoSeleccionado == null) {
+                Utils.mostrarError("Error", "Debe seleccionar un mantenimiento.");
+            } else if (Utils.campoVacio(txtDescripcionMantenimiento)
+                    || Utils.campoVacio(txtPrioridadMantenimiento)
+                    || Utils.campoVacio(txtCosteMantenimiento)
+                    || Utils.campoVacio(txtDuracionMantenimiento)
+                    || Utils.campoVacio(txtHerramientaMantenimiento)) {
+
+                Utils.mostrarError("Error", "Debe rellenar todos los campos.");
+
+            } else {
+                double coste = Utils.convertirDouble(txtCosteMantenimiento.getText());
+
+                if (coste == -1) {
+                    Utils.mostrarError("Error", "El coste debe ser un número.");
+                } else {
+                    Prioridad prioridad = Prioridad.valueOf(txtPrioridadMantenimiento.getText().toUpperCase());
+
+                    Mantenimiento mantenimientoNuevo = new Mantenimiento(
+                            mantenimientoSeleccionado.getIdMantenimiento(),
+                            txtDescripcionMantenimiento.getText(),
+                            prioridad,
+                            coste,
+                            txtDuracionMantenimiento.getText(),
+                            txtHerramientaMantenimiento.getText()
+                    );
+
+                    if (MantenimientoDAO.updateMantenimiento(mantenimientoNuevo, mantenimientoSeleccionado)) {
+                        Utils.mostrarMensaje("Información", "Mantenimiento actualizado correctamente.");
+                        limpiarMantenimiento(event);
+                        cargarMantenimientos();
+                    } else {
+                        Utils.mostrarError("Error", "No se ha podido actualizar el mantenimiento.");
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "Error al actualizar el mantenimiento.");
+        } catch (IllegalArgumentException e) {
+            Utils.mostrarError("Error", "La prioridad debe ser BAJA, ALTA o CRITICA.");
+        }
     }
 }
