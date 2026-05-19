@@ -1,25 +1,43 @@
-# PLUTONF
+# 🚀 PLUTONF
 
-Aplicación de gestión espacial desarrollada en JavaFX y MySQL.
+PLUTONF es una aplicación de escritorio desarrollada en JavaFX y MySQL orientada a la gestión de una estación espacial y sus distintos elementos.
+El proyecto permite administrar naves, módulos, astronautas, misiones y mantenimientos mediante una interfaz gráfica conectada a una base de datos relacional.
 
-## Autor
+------------------------------------------------------------------
+
+# Autor
+
 Manuel Ponferrada
 
-## Tecnologías utilizadas
+------------------------------------------------------------------
+
+# Tecnologías utilizadas
+
 - Java
 - JavaFX
 - Maven
-- MySQL / MariaDB
+- MySQL
 - JDBC
+- Scene Builder
+- CSS
 
-## Estructura del proyecto
-El proyecto sigue el patrón MVC:
-- Model
-- DAO
-- Controllers
-- Vistas FXML
+------------------------------------------------------------------
 
-## Funcionalidades
+# Arquitectura del proyecto
+
+El proyecto sigue el patrón MVC (Modelo - Vista - Controlador).
+
+## Estructura principal
+
+- **Model** → Clases y entidades del sistema
+- **DAO** → Acceso y gestión de base de datos
+- **Controllers** → Lógica de la aplicación
+- **FXML** → Interfaces gráficas
+
+------------------------------------------------------------------
+
+# Funcionalidades principales
+
 - Gestión de naves
 - Gestión de módulos
 - Gestión de astronautas
@@ -27,23 +45,40 @@ El proyecto sigue el patrón MVC:
 - Gestión de mantenimientos
 - Gestión de intervenciones
 - Consultas relacionales
-- Acoplamiento de módulos
+- Sistema de acoplamiento y desacoplamiento de módulos
+- CRUD completo en todas las entidades
 
-## Cómo ejecutar
-1. Clonar el repositorio
-2. Configurar la base de datos
-3. Ejecutar el script SQL
-4. Abrir el proyecto con Maven
-5. Ejecutar PlutonfApplication
+------------------------------------------------------------------
 
-## Base de datos
-La conexión se configura mediante XML.
+# Base de datos
 
-## Programación orientada a objetos
-El proyecto utiliza:
+La aplicación utiliza una base de datos relacional en MySQL.
+
+Se han implementado:
+- Claves primarias
+- Claves foráneas
+- Relaciones 1:N
+- Integridad referencial
+- Restricciones SQL
+
+La conexión a la base de datos se configura mediante XML.
+
+------------------------------------------------------------------
+
+# Programación Orientada a Objetos
+
+Durante el desarrollo se han utilizado distintos conceptos de POO:
+
 - Herencia
 - Interfaces
 - Clases abstractas
-- Sobreescritura
-- Sobrecarga
-- Colecciones
+- Sobreescritura de métodos
+- Sobrecarga de constructores
+- Relaciones entre objetos
+- Colecciones (`List` y `ArrayList`)
+
+------------------------------------------------------------------
+
+# 📌 Estado del proyecto
+
+Proyecto finalizado para la asignatura de Programación de 1º DAM.
