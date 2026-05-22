@@ -77,13 +77,17 @@ public class MisionDAO {
     /**
      * Metodo que se encarga de añadir una mision
      * @param mision
-     * @return la Mision que ha añadido, si no añade ninguna devuelve null
+     * @return true si se ha añadido correctamente
      * @throws SQLException
      */
     public static boolean addMision(Mision mision) throws SQLException {
+
         boolean anadido = false;
-        if ((mision != null) && findByPlaneta(mision.getNombrePlaneta()) == null) {
+
+        if (mision != null) {
+
             try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_INSERT)) {
+
                 ps.setString(1, mision.getNombrePlaneta());
                 ps.setString(2, mision.getObjetivo());
 
@@ -95,41 +99,48 @@ public class MisionDAO {
 
                 ps.executeUpdate();
 
-                mision = findByPlaneta(mision.getNombrePlaneta());
                 anadido = true;
             }
-        } else {
-            mision = null;
+
         }
+
         return anadido;
     }
 
     /**
      * Buscamos por el nombre del planeta una mision
-     * @param nombrePlaneta
-     * @return devuelve el objeto de mision
+     * @param planeta
+     * @return devuelve una lista misiones que se hayan hecho a un planeta
      * @throws SQLException
      */
-    public static Mision findByPlaneta(String nombrePlaneta) throws SQLException {
-        Mision mision = null;
-        try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_FIND_BY_PLANETA)) {
-            ps.setString(1, nombrePlaneta);
+    public static List<Mision> findAllByPlaneta(String planeta) throws SQLException {
+        List<Mision> misiones = new ArrayList<>();
+
+        try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(
+                "SELECT * FROM misiones WHERE nombrePlaneta = ?")) {
+
+            ps.setString(1, planeta);
+
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int id = rs.getInt("idMision");
-                String p = rs.getString("nombrePlaneta");
-                String obj = rs.getString("objetivo");
+
+            while (rs.next()) {
+                int idMision = rs.getInt("idMision");
+                String nombrePlaneta = rs.getString("nombrePlaneta");
+                String objetivo = rs.getString("objetivo");
 
                 int idNave = rs.getInt("idNave");
                 Nave nave = null;
+
                 if (!rs.wasNull()) {
                     nave = NaveDAO.findById(idNave);
                 }
 
-                mision = new Mision(id, p, obj, nave);
+                Mision mision = new Mision(idMision, nombrePlaneta, objetivo, nave);
+                misiones.add(mision);
             }
         }
-        return mision;
+
+        return misiones;
     }
 
     /**
@@ -141,7 +152,7 @@ public class MisionDAO {
      */
     public static boolean updateMision(Mision misionNueva, Mision misionActual) throws SQLException {
         boolean updated = false;
-        if ((misionActual != null) && (misionNueva != null) && findByPlaneta(misionActual.getNombrePlaneta()) != null) {
+        if ((misionActual != null) && (misionNueva != null) && findAllByPlaneta(misionActual.getNombrePlaneta()) != null) {
             try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_UPDATE)) {
                 ps.setString(1, misionNueva.getNombrePlaneta());
                 ps.setString(2, misionNueva.getObjetivo());
@@ -160,6 +171,7 @@ public class MisionDAO {
         }
         return updated;
     }
+
     /**
      * Metodo que elimina una mision
      * @param mision mision que se quiere eliminar

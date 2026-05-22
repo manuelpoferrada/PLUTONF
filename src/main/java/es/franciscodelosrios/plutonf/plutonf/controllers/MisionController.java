@@ -197,27 +197,39 @@ public class MisionController {
     }
 
     /**
-     * Busca una mision por planeta
+     * Busca misiones por planeta
      * @param event
      */
     @FXML
     public void buscarPorPlaneta(ActionEvent event) {
+
         try {
+
             if (Utils.campoVacio(txtBuscarPlanetaMision)) {
+
                 Utils.mostrarError("Error", "Debe escribir un planeta.");
+
             } else {
-                Mision mision = MisionDAO.findByPlaneta(txtBuscarPlanetaMision.getText());
+
+                List<Mision> misiones = MisionDAO.findAllByPlaneta(txtBuscarPlanetaMision.getText());
 
                 tablaMisiones.getItems().clear();
 
-                if (mision != null) {
-                    tablaMisiones.getItems().add(mision);
+                if (!misiones.isEmpty()) {
+
+                    for (int i = 0; i < misiones.size(); i++) {
+                        tablaMisiones.getItems().add(misiones.get(i));
+                    }
+
                 } else {
-                    Utils.mostrarError("Error", "No existe una misión con ese planeta.");
+
+                    Utils.mostrarError("Error", "No existen misiones para ese planeta.");
                 }
             }
+
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "Error al buscar la misión.");
+
+            Utils.mostrarError("Error", "Error al buscar las misiones.");
         }
     }
 
