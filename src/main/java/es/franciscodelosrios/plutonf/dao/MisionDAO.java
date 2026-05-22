@@ -85,7 +85,6 @@ public class MisionDAO {
         boolean anadido = false;
 
         if (mision != null) {
-
             try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_INSERT)) {
 
                 ps.setString(1, mision.getNombrePlaneta());
@@ -98,32 +97,30 @@ public class MisionDAO {
                 }
 
                 ps.executeUpdate();
-
                 anadido = true;
             }
-
         }
-
         return anadido;
     }
 
     /**
-     * Buscamos por el nombre del planeta una mision
+     * Buscamos por el nombre del planeta las misiones realizadas a ese planeta
      * @param planeta
-     * @return devuelve una lista misiones que se hayan hecho a un planeta
+     * @return devuelve una lista de misiones que se hayan hecho a un planeta
      * @throws SQLException
      */
     public static List<Mision> findAllByPlaneta(String planeta) throws SQLException {
+
         List<Mision> misiones = new ArrayList<>();
 
-        try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(
-                "SELECT * FROM misiones WHERE nombrePlaneta = ?")) {
+        try (PreparedStatement ps = ConnectionBD.getInstance().getConnection().prepareStatement(SQL_FIND_BY_PLANETA)) {
 
             ps.setString(1, planeta);
 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
+
                 int idMision = rs.getInt("idMision");
                 String nombrePlaneta = rs.getString("nombrePlaneta");
                 String objetivo = rs.getString("objetivo");
@@ -131,6 +128,10 @@ public class MisionDAO {
                 int idNave = rs.getInt("idNave");
                 Nave nave = null;
 
+                /*
+                 * Carga eager:
+                 * además de la misión, también se carga el objeto Nave completo.
+                 */
                 if (!rs.wasNull()) {
                     nave = NaveDAO.findById(idNave);
                 }
