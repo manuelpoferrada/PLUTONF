@@ -130,20 +130,20 @@
                         <Button fx:id="btnBuscarDescripcionMantenimiento" mnemonicParsing="false" onAction="#buscarPorDescripcion" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
-                <Button fx:id="btnEliminarMantenimiento" mnemonicParsing="false" onAction="#eliminarMantenimiento" prefHeight="30.0" prefWidth="59.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnEliminarMantenimiento" mnemonicParsing="false" onAction="#eliminarMantenimiento" prefHeight="30.0" prefWidth="86.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                     <GridPane.margin>
-                        <Insets left="65.0" />
+                        <Insets />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnActualizarMantenimiento" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="64.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnActualizarMantenimiento" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="94.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <GridPane.margin>
-                        <Insets left="200.0" />
+                        <Insets />
                     </GridPane.margin>
                 </Button>
                 <Button fx:id="btnVolverMantenimiento" mnemonicParsing="false" onAction="#volverGestionar" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Button fx:id="btnIntervenciones" mnemonicParsing="false" onAction="#abrirIntervenciones" prefHeight="30.0" prefWidth="80.0" text="Intervención" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Button fx:id="btnIntervenciones" mnemonicParsing="false" onAction="#abrirIntervenciones" prefHeight="30.0" prefWidth="95.0" text="Intervención" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                <GridPane.margin>
-                  <Insets left="60.0" />
+                  <Insets />
                </GridPane.margin></Button>
             <Button fx:id="btnActualizarMantenimientoDeLaTabla" mnemonicParsing="false" onAction="#actualizarMantenimiento" prefHeight="30.0" prefWidth="108.0" text="Guar. Actualización" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <GridPane.margin>
