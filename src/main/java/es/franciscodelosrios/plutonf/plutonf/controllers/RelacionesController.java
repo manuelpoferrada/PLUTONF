@@ -62,9 +62,12 @@ public class RelacionesController {
         colConsulta1.setText("Nave");
         colConsulta2.setText("Planeta");
 
+        //  Dato mostrado en la primera columna
         colConsulta1.setCellValueFactory(cellData -> {
+            // Convertir objeto de la fila a mision
             Mision mision = (Mision) cellData.getValue();
 
+            // Nombramos la nave si la mision la tiene asignada
             if (mision.getNave() != null) {
                 return new SimpleStringProperty(mision.getNave().getNombre());
             }
@@ -72,13 +75,15 @@ public class RelacionesController {
             return new SimpleStringProperty("Sin nave");
         });
 
+
+        // Dato mostrado en la segunda columna
         colConsulta2.setCellValueFactory(cellData -> {
             Mision mision = (Mision) cellData.getValue();
             return new SimpleStringProperty(mision.getNombrePlaneta());
         });
 
         try {
-
+        // Recoremos las misiones de la BBDD
             List<Mision> misiones = MisionDAO.findAll();
 
             for (int i = 0; i < misiones.size(); i++) {

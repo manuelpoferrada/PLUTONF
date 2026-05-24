@@ -94,10 +94,12 @@ public class ModulosController {
         colOxigenoModulo.setCellValueFactory(new PropertyValueFactory<Modulo, Double>("nivelOxigeno"));
         colTemperaturaModulo.setCellValueFactory(new PropertyValueFactory<Modulo, Double>("temperaturaInterior"));
         colNaveModulo.setCellValueFactory(new PropertyValueFactory<Modulo, Nave>("nave"));
+        //Configuramos como se rellena la columna
         colDatoEspecificoModulo.setCellValueFactory(cellData -> {
-
+            //Obtengo el modulo de esa tupla
             Modulo modulo = cellData.getValue();
 
+            //CAST transformando un modulo a moduloControl/Labo...
             if (modulo instanceof ModulosControl) {
                 return new javafx.beans.property.SimpleIntegerProperty(
                         ((ModulosControl) modulo).getNivelSeguridad()
