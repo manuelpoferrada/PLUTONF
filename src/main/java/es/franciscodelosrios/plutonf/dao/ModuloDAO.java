@@ -177,7 +177,6 @@ public class ModuloDAO {
                     ps.setInt(9, ((ModulosVivienda) modulo).getNumCamas());
                 }
 
-                // executeUpdate devuelve el número de filas afectadas
                 int filasAfectadas = ps.executeUpdate();
                 if (filasAfectadas > 0) {
                     insertado = true;

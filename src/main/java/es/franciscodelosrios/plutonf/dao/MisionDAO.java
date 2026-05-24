@@ -128,10 +128,6 @@ public class MisionDAO {
                 int idNave = rs.getInt("idNave");
                 Nave nave = null;
 
-                /*
-                 * Carga eager:
-                 * además de la misión, también se carga el objeto Nave completo.
-                 */
                 if (!rs.wasNull()) {
                     nave = NaveDAO.findById(idNave);
                 }

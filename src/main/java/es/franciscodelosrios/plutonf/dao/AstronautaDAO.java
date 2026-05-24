@@ -18,7 +18,7 @@ public class AstronautaDAO {
     private static final String SQL_DELETE = "DELETE FROM astronautas WHERE idAstronauta = ?";
 
     /**
-     * Metodo que busca todos los astronautas de la base de datos
+     * Metodo eager que busca todos los astronautas de la base de datos
      * @return lista de astronautas
      * @throws SQLException
      */

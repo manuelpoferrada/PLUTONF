@@ -77,6 +77,7 @@ public class IntervencionMantenimientoDAO {
             ps.setInt(1, intervencion.getMantenimiento().getIdMantenimiento());
             ps.setInt(2, intervencion.getAstronauta().getIdAstronauta());
             ps.setInt(3, intervencion.getModulo().getIdModulo());
+            // Hay que poner esto "new java.sql.Date" porque mysql no lo entiende
             ps.setDate(4, new java.sql.Date(intervencion.getFechaIntervencion().getTime()));
             ps.setString(5, intervencion.getObservaciones());
             ps.executeUpdate();
