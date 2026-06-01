@@ -10,6 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -35,7 +37,7 @@ public class ModulosController {
     private TextField txtOxigenoModulo;
 
     @FXML
-    private TextField txtIdNaveModulo;
+    private ComboBox<Nave> cbNaveModulo;
 
     @FXML
     private TextField txtTipoModulo;
@@ -119,6 +121,8 @@ public class ModulosController {
             return null;
         });
 
+        configurarComboBoxNaves();
+        cargarNavesComboBox();
         cargarModulos();
 
         tablaModulos.getSelectionModel()
@@ -130,9 +134,7 @@ public class ModulosController {
                         txtCapacidadModulo.setText(String.valueOf(newValue.getCapacidadMaxima()));
                         txtOxigenoModulo.setText(String.valueOf(newValue.getNivelOxigeno()));
 
-                        if (newValue.getNave() != null) {
-                            txtIdNaveModulo.setText(String.valueOf(newValue.getNave().getIdNave()));
-                        }
+                        cbNaveModulo.setValue(newValue.getNave());
 
                         if (newValue instanceof ModulosControl) {
                             txtTipoModulo.setText("CONTROL");
@@ -149,6 +151,55 @@ public class ModulosController {
     }
 
     /**
+     * Configura como se muestran las naves en el ComboBox
+     */
+    public void configurarComboBoxNaves() {
+        cbNaveModulo.setCellFactory(param -> new ListCell<Nave>() {
+            @Override
+            protected void updateItem(Nave nave, boolean empty) {
+                super.updateItem(nave, empty);
+
+                if (empty || nave == null) {
+                    setText(null);
+                } else {
+                    setText(nave.getIdNave() + " - " + nave.getNombre());
+                }
+            }
+        });
+
+        cbNaveModulo.setButtonCell(new ListCell<Nave>() {
+            @Override
+            protected void updateItem(Nave nave, boolean empty) {
+                super.updateItem(nave, empty);
+
+                if (empty || nave == null) {
+                    setText(null);
+                } else {
+                    setText(nave.getIdNave() + " - " + nave.getNombre());
+                }
+            }
+        });
+    }
+
+    /**
+     * Carga las naves en el ComboBox
+     */
+    public void cargarNavesComboBox() {
+        try {
+            cbNaveModulo.getItems().clear();
+
+            List<Nave> naves = NaveDAO.findAll();
+
+            for (int i = 0; i < naves.size(); i++) {
+                cbNaveModulo.getItems().add(naves.get(i));
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "No se han podido cargar las naves.");
+        }
+    }
+
+    /**
      * Limpia los campos del formulario
      * @param event
      */
@@ -159,10 +210,11 @@ public class ModulosController {
                 txtSectorModulo,
                 txtCapacidadModulo,
                 txtOxigenoModulo,
-                txtIdNaveModulo,
                 txtTipoModulo,
                 txtDatoEspecificoModulo
         );
+
+        cbNaveModulo.setValue(null);
     }
 
     /**
@@ -177,7 +229,7 @@ public class ModulosController {
                     || Utils.campoVacio(txtSectorModulo)
                     || Utils.campoVacio(txtCapacidadModulo)
                     || Utils.campoVacio(txtOxigenoModulo)
-                    || Utils.campoVacio(txtIdNaveModulo)
+                    || cbNaveModulo.getValue() == null
                     || Utils.campoVacio(txtTipoModulo)
                     || Utils.campoVacio(txtDatoEspecificoModulo)) {
 
@@ -187,82 +239,74 @@ public class ModulosController {
 
                 int capacidad = Utils.convertirEntero(txtCapacidadModulo.getText());
                 double oxigeno = Utils.convertirDouble(txtOxigenoModulo.getText());
-                int idNave = Utils.convertirEntero(txtIdNaveModulo.getText());
                 int datoEspecifico = Utils.convertirEntero(txtDatoEspecificoModulo.getText());
 
-                if (capacidad == -1 || oxigeno == -1 || idNave == -1 || datoEspecifico == -1) {
+                if (capacidad == -1 || oxigeno == -1 || datoEspecifico == -1) {
 
-                    Utils.mostrarError("Error", "Capacidad, oxígeno, ID Nave y dato específico deben ser números.");
+                    Utils.mostrarError("Error", "Capacidad, oxígeno y dato específico deben ser números.");
 
                 } else {
 
-                    Nave nave = NaveDAO.findById(idNave);
+                    Nave nave = cbNaveModulo.getValue();
 
-                    if (nave == null) {
+                    Modulo modulo = null;
+                    String tipo = txtTipoModulo.getText();
 
-                        Utils.mostrarError("Error", "No existe una nave con ese ID.");
+                    if (tipo.equalsIgnoreCase("CONTROL")) {
+
+                        modulo = new ModulosControl(
+                                0,
+                                txtNombreModulo.getText(),
+                                txtSectorModulo.getText(),
+                                capacidad,
+                                oxigeno,
+                                22,
+                                nave,
+                                datoEspecifico
+                        );
+
+                    } else if (tipo.equalsIgnoreCase("LABORATORIO")) {
+
+                        modulo = new ModulosLaboratorio(
+                                0,
+                                txtNombreModulo.getText(),
+                                txtSectorModulo.getText(),
+                                capacidad,
+                                oxigeno,
+                                22,
+                                nave,
+                                datoEspecifico
+                        );
+
+                    } else if (tipo.equalsIgnoreCase("VIVIENDA")) {
+
+                        modulo = new ModulosVivienda(
+                                0,
+                                txtNombreModulo.getText(),
+                                txtSectorModulo.getText(),
+                                capacidad,
+                                oxigeno,
+                                22,
+                                nave,
+                                datoEspecifico
+                        );
 
                     } else {
 
-                        Modulo modulo = null;
-                        String tipo = txtTipoModulo.getText();
+                        Utils.mostrarError("Error", "Tipo de módulo incorrecto.");
+                    }
 
-                        if (tipo.equalsIgnoreCase("CONTROL")) {
+                    if (modulo != null) {
 
-                            modulo = new ModulosControl(
-                                    0,
-                                    txtNombreModulo.getText(),
-                                    txtSectorModulo.getText(),
-                                    capacidad,
-                                    oxigeno,
-                                    22,
-                                    nave,
-                                    datoEspecifico
-                            );
+                        if (ModuloDAO.addModulo(modulo)) {
 
-                        } else if (tipo.equalsIgnoreCase("LABORATORIO")) {
-
-                            modulo = new ModulosLaboratorio(
-                                    0,
-                                    txtNombreModulo.getText(),
-                                    txtSectorModulo.getText(),
-                                    capacidad,
-                                    oxigeno,
-                                    22,
-                                    nave,
-                                    datoEspecifico
-                            );
-
-                        } else if (tipo.equalsIgnoreCase("VIVIENDA")) {
-
-                            modulo = new ModulosVivienda(
-                                    0,
-                                    txtNombreModulo.getText(),
-                                    txtSectorModulo.getText(),
-                                    capacidad,
-                                    oxigeno,
-                                    22,
-                                    nave,
-                                    datoEspecifico
-                            );
+                            Utils.mostrarMensaje("Información", "Módulo guardado correctamente.");
+                            limpiarModulo(event);
+                            cargarModulos();
 
                         } else {
 
-                            Utils.mostrarError("Error", "Tipo de módulo incorrecto.");
-                        }
-
-                        if (modulo != null) {
-
-                            if (ModuloDAO.addModulo(modulo)) {
-
-                                Utils.mostrarMensaje("Información", "Módulo guardado correctamente.");
-                                limpiarModulo(event);
-                                cargarModulos();
-
-                            } else {
-
-                                Utils.mostrarError("Error", "No se ha podido guardar el módulo.");
-                            }
+                            Utils.mostrarError("Error", "No se ha podido guardar el módulo.");
                         }
                     }
                 }
@@ -322,6 +366,7 @@ public class ModulosController {
      */
     @FXML
     public void actualizarTabla(ActionEvent event) {
+        cargarNavesComboBox();
         cargarModulos();
     }
 
@@ -389,6 +434,7 @@ public class ModulosController {
 
         Stage stage = (Stage) btnVolverModulo.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -404,6 +450,7 @@ public class ModulosController {
 
         Stage stage = (Stage) btnAbrirDesacoplamiento.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -424,7 +471,7 @@ public class ModulosController {
                     || Utils.campoVacio(txtSectorModulo)
                     || Utils.campoVacio(txtCapacidadModulo)
                     || Utils.campoVacio(txtOxigenoModulo)
-                    || Utils.campoVacio(txtIdNaveModulo)
+                    || cbNaveModulo.getValue() == null
                     || Utils.campoVacio(txtTipoModulo)
                     || Utils.campoVacio(txtDatoEspecificoModulo)) {
 
@@ -434,81 +481,74 @@ public class ModulosController {
 
                 int capacidad = Utils.convertirEntero(txtCapacidadModulo.getText());
                 double oxigeno = Utils.convertirDouble(txtOxigenoModulo.getText());
-                int idNave = Utils.convertirEntero(txtIdNaveModulo.getText());
                 int datoEspecifico = Utils.convertirEntero(txtDatoEspecificoModulo.getText());
 
-                if (capacidad == -1 || oxigeno == -1 || idNave == -1 || datoEspecifico == -1) {
+                if (capacidad == -1 || oxigeno == -1 || datoEspecifico == -1) {
 
-                    Utils.mostrarError("Error", "Capacidad, oxígeno, ID Nave y dato específico deben ser números.");
+                    Utils.mostrarError("Error", "Capacidad, oxígeno y dato específico deben ser números.");
 
                 } else {
 
-                    Nave nave = NaveDAO.findById(idNave);
+                    Nave nave = cbNaveModulo.getValue();
 
-                    if (nave == null) {
+                    Modulo moduloNuevo = null;
+                    String tipo = txtTipoModulo.getText();
 
-                        Utils.mostrarError("Error", "No existe una nave con ese ID.");
+                    if (tipo.equalsIgnoreCase("CONTROL")) {
+
+                        moduloNuevo = new ModulosControl(
+                                moduloSeleccionado.getIdModulo(),
+                                txtNombreModulo.getText(),
+                                txtSectorModulo.getText(),
+                                capacidad,
+                                oxigeno,
+                                moduloSeleccionado.getTemperaturaInterior(),
+                                nave,
+                                datoEspecifico
+                        );
+
+                    } else if (tipo.equalsIgnoreCase("LABORATORIO")) {
+
+                        moduloNuevo = new ModulosLaboratorio(
+                                moduloSeleccionado.getIdModulo(),
+                                txtNombreModulo.getText(),
+                                txtSectorModulo.getText(),
+                                capacidad,
+                                oxigeno,
+                                moduloSeleccionado.getTemperaturaInterior(),
+                                nave,
+                                datoEspecifico
+                        );
+
+                    } else if (tipo.equalsIgnoreCase("VIVIENDA")) {
+
+                        moduloNuevo = new ModulosVivienda(
+                                moduloSeleccionado.getIdModulo(),
+                                txtNombreModulo.getText(),
+                                txtSectorModulo.getText(),
+                                capacidad,
+                                oxigeno,
+                                moduloSeleccionado.getTemperaturaInterior(),
+                                nave,
+                                datoEspecifico
+                        );
 
                     } else {
 
-                        Modulo moduloNuevo = null;
-                        String tipo = txtTipoModulo.getText();
+                        Utils.mostrarError("Error", "Tipo de módulo incorrecto.");
+                    }
 
-                        if (tipo.equalsIgnoreCase("CONTROL")) {
+                    if (moduloNuevo != null) {
 
-                            moduloNuevo = new ModulosControl(
-                                    moduloSeleccionado.getIdModulo(),
-                                    txtNombreModulo.getText(),
-                                    txtSectorModulo.getText(),
-                                    capacidad,
-                                    oxigeno,
-                                    moduloSeleccionado.getTemperaturaInterior(),
-                                    nave,
-                                    datoEspecifico
-                            );
+                        if (ModuloDAO.updateModulo(moduloNuevo, moduloSeleccionado)) {
 
-                        } else if (tipo.equalsIgnoreCase("LABORATORIO")) {
-
-                            moduloNuevo = new ModulosLaboratorio(
-                                    moduloSeleccionado.getIdModulo(),
-                                    txtNombreModulo.getText(),
-                                    txtSectorModulo.getText(),
-                                    capacidad,
-                                    oxigeno,
-                                    moduloSeleccionado.getTemperaturaInterior(),
-                                    nave,
-                                    datoEspecifico
-                            );
-
-                        } else if (tipo.equalsIgnoreCase("VIVIENDA")) {
-
-                            moduloNuevo = new ModulosVivienda(
-                                    moduloSeleccionado.getIdModulo(),
-                                    txtNombreModulo.getText(),
-                                    txtSectorModulo.getText(),
-                                    capacidad,
-                                    oxigeno,
-                                    moduloSeleccionado.getTemperaturaInterior(),
-                                    nave,
-                                    datoEspecifico
-                            );
+                            Utils.mostrarMensaje("Información", "Módulo actualizado correctamente.");
+                            limpiarModulo(event);
+                            cargarModulos();
 
                         } else {
 
-                            Utils.mostrarError("Error", "Tipo de módulo incorrecto.");
-                        }
-                        if (moduloNuevo != null) {
-
-                            if (ModuloDAO.updateModulo(moduloNuevo, moduloSeleccionado)) {
-
-                                Utils.mostrarMensaje("Información", "Módulo actualizado correctamente.");
-                                limpiarModulo(event);
-                                cargarModulos();
-
-                            } else {
-
-                                Utils.mostrarError("Error", "No se ha podido actualizar el módulo.");
-                            }
+                            Utils.mostrarError("Error", "No se ha podido actualizar el módulo.");
                         }
                     }
                 }
@@ -518,4 +558,5 @@ public class ModulosController {
             Utils.mostrarError("Error", "Error al actualizar el módulo.");
         }
     }
+
 }

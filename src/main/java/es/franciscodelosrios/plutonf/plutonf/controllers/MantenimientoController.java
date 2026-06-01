@@ -260,6 +260,7 @@ public class MantenimientoController {
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) btnVolverMantenimiento.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -278,6 +279,7 @@ public class MantenimientoController {
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) btnIntervenciones.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

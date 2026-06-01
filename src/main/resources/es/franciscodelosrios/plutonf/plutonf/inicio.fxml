@@ -14,11 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="440.0" prefWidth="850.0"
-      xmlns="http://javafx.com/javafx/25"
-      xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.InicioController"
-      stylesheets="@../../../../css/estilos.css">
+<VBox prefHeight="447.0" prefWidth="737.0" stylesheets="@../../../../css/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.InicioController">
     <MenuBar>
         <menus>
             <Menu mnemonicParsing="false" text="Archivo">
@@ -49,37 +45,52 @@
             <RowConstraints minHeight="40.0" prefHeight="50.0" />
         </rowConstraints>
         <children>
-            <Label text="Bienvenido a PLUTONF" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+            <Label text="Bienvenido a PLUTONF" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.vgrow="NEVER">
                 <font>
                     <Font name="Century Gothic Bold" size="24.0" />
                 </font>
             </Label>
-            <ImageView fitHeight="75.0" fitWidth="120.0" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <ImageView fitHeight="75.0" fitWidth="120.0" preserveRatio="true" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
                 <image>
                     <Image url="@img/logo.png" />
                 </image>
             </ImageView>
-            <Button fx:id="btnCrearMisionInicio" mnemonicParsing="false" onAction="#abrirCrearMision" prefHeight="95.0" prefWidth="240.0" text="CREAR MISIÓN" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="btnCrearMisionInicio" mnemonicParsing="false" onAction="#abrirCrearMision" prefHeight="95.0" prefWidth="240.0" text="CREAR MISIÓN" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
+            <GridPane.margin>
+               <Insets right="30.0" />
+            </GridPane.margin>
             </Button>
-            <Button fx:id="btnGestionarInicio" mnemonicParsing="false" onAction="#abrirGestionar" prefHeight="95.0" prefWidth="240.0" text="GESTIONAR" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+            <Button fx:id="btnGestionarInicio" mnemonicParsing="false" onAction="#abrirGestionar" prefHeight="95.0" prefWidth="240.0" text="GESTIONAR" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="2" GridPane.vgrow="NEVER">
                 <font>
                     <Font name="System Bold" size="15.0" />
                 </font>
+            <GridPane.margin>
+               <Insets left="30.0" />
+            </GridPane.margin>
             </Button>
-            <Label text="Añade una nueva misión espacial." textAlignment="CENTER" wrapText="true" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Label prefHeight="34.0" prefWidth="249.0" text="Añade una nueva misión espacial." textAlignment="CENTER" wrapText="true" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
                 <font>
-                    <Font size="12.0" />
+                    <Font name="System Bold Italic" size="12.0" />
                 </font>
+            <GridPane.margin>
+               <Insets />
+            </GridPane.margin>
+            <padding>
+               <Insets bottom="30.0" right="50.0" />
+            </padding>
             </Label>
-            <Label text="Crear, editar y eliminar datos del sistema." textAlignment="CENTER" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3">
+            <Label prefHeight="30.0" prefWidth="276.0" text="Crear, editar y eliminar datos del sistema." textAlignment="CENTER" textFill="#3d326e" wrapText="true" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.hgrow="NEVER" GridPane.rowIndex="3" GridPane.vgrow="NEVER">
                 <font>
-                    <Font size="12.0" />
+                    <Font name="System Bold Italic" size="12.0" />
                 </font>
+            <padding>
+               <Insets bottom="30.0" left="32.0" />
+            </padding>
             </Label>
-            <Button fx:id="btnSalirInicio" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="30.0" prefWidth="90.0" text="Salir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="4">
+            <Button fx:id="btnSalirInicio" mnemonicParsing="false" onAction="#cerrarPrograma" prefHeight="30.0" prefWidth="90.0" text="Salir" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.hgrow="NEVER" GridPane.rowIndex="4" GridPane.vgrow="NEVER">
                 <GridPane.margin>
                     <Insets right="20.0" />
                 </GridPane.margin>

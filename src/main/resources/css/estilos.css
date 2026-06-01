@@ -21,3 +21,31 @@
 .table-view {
     -fx-border-color: #d0d0d0;
 }
+
+/* Tabla */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #274472;
+    -fx-border-width: 1;
+}
+
+/* Cabecera de columnas */
+.table-view .column-header {
+    -fx-background-color: #274472;
+}
+
+/* Texto de la cabecera */
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Filas seleccionadas */
+.table-row-cell:selected {
+    -fx-background-color: #4b7bec;
+}
+
+/* Texto fila seleccionada */
+.table-row-cell:selected .text {
+    -fx-fill: white;
+}

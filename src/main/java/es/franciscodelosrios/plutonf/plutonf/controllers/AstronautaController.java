@@ -11,6 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -36,7 +38,7 @@ public class AstronautaController {
     private TextField txtRangoAstronauta;
 
     @FXML
-    private TextField txtIdModuloAstronauta;
+    private ComboBox<Modulo> cbModuloAstronauta;
 
     @FXML
     private TextField txtBuscarIdAstronauta;
@@ -72,6 +74,9 @@ public class AstronautaController {
         colRangoAstronauta.setCellValueFactory(new PropertyValueFactory<Astronauta, String>("rango"));
         colDniAstronauta.setCellValueFactory(new PropertyValueFactory<Astronauta, String>("dni"));
         colHabilidadAstronauta.setCellValueFactory(new PropertyValueFactory<Astronauta, String>("habilidadPrincipal"));
+
+        configurarComboBoxModulos();
+        cargarModulosComboBox();
         cargarAstronautas();
 
         // Accedemos al sistema de selección de la tabla
@@ -82,12 +87,60 @@ public class AstronautaController {
                         txtNombreAstronauta.setText(newValue.getNombre());
                         txtHabilidadAstronauta.setText(newValue.getHabilidadPrincipal());
                         txtRangoAstronauta.setText(newValue.getRango());
-                        txtIdModuloAstronauta.setText(
-                                String.valueOf(newValue.getModulo().getIdModulo())
-                        );
+
+                        cbModuloAstronauta.setValue(newValue.getModulo());
                     }
                 }
         );
+    }
+
+    /**
+     * Configura como se muestran los modulos en el ComboBox
+     */
+    public void configurarComboBoxModulos() {
+        cbModuloAstronauta.setCellFactory(param -> new ListCell<Modulo>() {
+            @Override
+            protected void updateItem(Modulo modulo, boolean empty) {
+                super.updateItem(modulo, empty);
+
+                if (empty || modulo == null) {
+                    setText(null);
+                } else {
+                    setText(modulo.getIdModulo() + " - " + modulo.getNombre());
+                }
+            }
+        });
+
+        cbModuloAstronauta.setButtonCell(new ListCell<Modulo>() {
+            @Override
+            protected void updateItem(Modulo modulo, boolean empty) {
+                super.updateItem(modulo, empty);
+
+                if (empty || modulo == null) {
+                    setText(null);
+                } else {
+                    setText(modulo.getIdModulo() + " - " + modulo.getNombre());
+                }
+            }
+        });
+    }
+
+    /**
+     * Carga los modulos en el ComboBox
+     */
+    public void cargarModulosComboBox() {
+        try {
+            cbModuloAstronauta.getItems().clear();
+
+            List<Modulo> modulos = ModuloDAO.findAll();
+
+            for (int i = 0; i < modulos.size(); i++) {
+                cbModuloAstronauta.getItems().add(modulos.get(i));
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "No se han podido cargar los módulos.");
+        }
     }
 
     /**
@@ -96,7 +149,14 @@ public class AstronautaController {
      */
     @FXML
     public void limpiarAstronauta(ActionEvent event) {
-        Utils.limpiarCampos(txtDniAstronauta, txtNombreAstronauta, txtHabilidadAstronauta, txtRangoAstronauta, txtIdModuloAstronauta);
+        Utils.limpiarCampos(
+                txtDniAstronauta,
+                txtNombreAstronauta,
+                txtHabilidadAstronauta,
+                txtRangoAstronauta
+        );
+
+        cbModuloAstronauta.setValue(null);
     }
 
     /**
@@ -106,39 +166,36 @@ public class AstronautaController {
     @FXML
     public void guardarAstronauta(ActionEvent event) {
         try {
-            if (Utils.campoVacio(txtDniAstronauta) || Utils.campoVacio(txtNombreAstronauta) || Utils.campoVacio(txtHabilidadAstronauta) || Utils.campoVacio(txtRangoAstronauta) || Utils.campoVacio(txtIdModuloAstronauta)) {
+            if (Utils.campoVacio(txtDniAstronauta)
+                    || Utils.campoVacio(txtNombreAstronauta)
+                    || Utils.campoVacio(txtHabilidadAstronauta)
+                    || Utils.campoVacio(txtRangoAstronauta)
+                    || cbModuloAstronauta.getValue() == null) {
+
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
+
             } else {
-                int idModulo = Utils.convertirEntero(txtIdModuloAstronauta.getText());
 
-                if (idModulo == -1) {
-                    Utils.mostrarError("Error", "El ID del módulo debe ser un número.");
+                Modulo modulo = cbModuloAstronauta.getValue();
+
+                Astronauta astronauta = new Astronauta(
+                        0,
+                        txtDniAstronauta.getText(),
+                        txtNombreAstronauta.getText(),
+                        txtHabilidadAstronauta.getText(),
+                        txtRangoAstronauta.getText(),
+                        0,
+                        0,
+                        "",
+                        modulo
+                );
+
+                if (AstronautaDAO.addAstronauta(astronauta)) {
+                    Utils.mostrarMensaje("Información", "Astronauta guardado correctamente.");
+                    limpiarAstronauta(event);
+                    cargarAstronautas();
                 } else {
-                    Modulo modulo = ModuloDAO.findById(idModulo);
-
-                    if (modulo == null) {
-                        Utils.mostrarError("Error", "No existe un módulo con ese ID.");
-                    } else {
-                        Astronauta astronauta = new Astronauta(
-                                0,
-                                txtDniAstronauta.getText(),
-                                txtNombreAstronauta.getText(),
-                                txtHabilidadAstronauta.getText(),
-                                txtRangoAstronauta.getText(),
-                                0,
-                                0,
-                                "",
-                                modulo
-                        );
-
-                        if (AstronautaDAO.addAstronauta(astronauta)) {
-                            Utils.mostrarMensaje("Información", "Astronauta guardado correctamente.");
-                            limpiarAstronauta(event);
-                            cargarAstronautas();
-                        } else {
-                            Utils.mostrarError("Error", "No se ha podido guardar el astronauta.");
-                        }
-                    }
+                    Utils.mostrarError("Error", "No se ha podido guardar el astronauta.");
                 }
             }
         } catch (SQLException e) {
@@ -194,6 +251,7 @@ public class AstronautaController {
      */
     @FXML
     public void actualizarTabla(ActionEvent event) {
+        cargarModulosComboBox();
         cargarAstronautas();
     }
 
@@ -236,6 +294,7 @@ public class AstronautaController {
 
         Stage stage = (Stage) btnVolverAstronauta.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -249,40 +308,39 @@ public class AstronautaController {
             Astronauta astronautaSeleccionado = tablaAstronautas.getSelectionModel().getSelectedItem();
 
             if (astronautaSeleccionado == null) {
+
                 Utils.mostrarError("Error", "Debe seleccionar un astronauta.");
-            } else if (Utils.campoVacio(txtDniAstronauta) || Utils.campoVacio(txtNombreAstronauta) || Utils.campoVacio(txtHabilidadAstronauta) || Utils.campoVacio(txtRangoAstronauta) || Utils.campoVacio(txtIdModuloAstronauta)) {
+
+            } else if (Utils.campoVacio(txtDniAstronauta)
+                    || Utils.campoVacio(txtNombreAstronauta)
+                    || Utils.campoVacio(txtHabilidadAstronauta)
+                    || Utils.campoVacio(txtRangoAstronauta)
+                    || cbModuloAstronauta.getValue() == null) {
+
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
+
             } else {
-                int idModulo = Utils.convertirEntero(txtIdModuloAstronauta.getText());
 
-                if (idModulo == -1) {
-                    Utils.mostrarError("Error", "El ID del módulo debe ser un número.");
+                Modulo modulo = cbModuloAstronauta.getValue();
+
+                Astronauta astronautaNuevo = new Astronauta(
+                        astronautaSeleccionado.getIdAstronauta(),
+                        txtDniAstronauta.getText(),
+                        txtNombreAstronauta.getText(),
+                        txtHabilidadAstronauta.getText(),
+                        txtRangoAstronauta.getText(),
+                        astronautaSeleccionado.getEdad(),
+                        astronautaSeleccionado.getHorasVuelo(),
+                        astronautaSeleccionado.getNacionalidad(),
+                        modulo
+                );
+
+                if (AstronautaDAO.updateAstronauta(astronautaNuevo, astronautaSeleccionado)) {
+                    Utils.mostrarMensaje("Información", "Astronauta actualizado correctamente.");
+                    limpiarAstronauta(event);
+                    cargarAstronautas();
                 } else {
-                    Modulo modulo = ModuloDAO.findById(idModulo);
-
-                    if (modulo == null) {
-                        Utils.mostrarError("Error", "No existe un módulo con ese ID.");
-                    } else {
-                        Astronauta astronautaNuevo = new Astronauta(
-                                astronautaSeleccionado.getIdAstronauta(),
-                                txtDniAstronauta.getText(),
-                                txtNombreAstronauta.getText(),
-                                txtHabilidadAstronauta.getText(),
-                                txtRangoAstronauta.getText(),
-                                astronautaSeleccionado.getEdad(),
-                                astronautaSeleccionado.getHorasVuelo(),
-                                astronautaSeleccionado.getNacionalidad(),
-                                modulo
-                        );
-
-                        if (AstronautaDAO.updateAstronauta(astronautaNuevo, astronautaSeleccionado)) {
-                            Utils.mostrarMensaje("Información", "Astronauta actualizado correctamente.");
-                            limpiarAstronauta(event);
-                            cargarAstronautas();
-                        } else {
-                            Utils.mostrarError("Error", "No se ha podido actualizar el astronauta.");
-                        }
-                    }
+                    Utils.mostrarError("Error", "No se ha podido actualizar el astronauta.");
                 }
             }
         } catch (SQLException e) {

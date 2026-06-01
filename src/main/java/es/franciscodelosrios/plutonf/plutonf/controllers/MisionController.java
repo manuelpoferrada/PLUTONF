@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -24,7 +25,7 @@ import java.util.List;
 public class MisionController {
 
     @FXML
-    private TextField txtIdNaveMision;
+    private ComboBox<Nave> cbNaveMision;
 
     @FXML
     private TextField txtPlanetaMision;
@@ -61,24 +62,73 @@ public class MisionController {
      */
     @FXML
     public void initialize() {
-        colIdMision.setCellValueFactory(new PropertyValueFactory<Mision, Integer>("idMision"));
-        colPlanetaMision.setCellValueFactory(new PropertyValueFactory<Mision, String>("nombrePlaneta"));
-        colObjetivoMision.setCellValueFactory(new PropertyValueFactory<Mision, String>("objetivo"));
-        colIdNaveMision.setCellValueFactory(new PropertyValueFactory<Mision, Nave>("nave"));
+
+        colIdMision.setCellValueFactory(
+                new PropertyValueFactory<Mision, Integer>("idMision")
+        );
+
+        colPlanetaMision.setCellValueFactory(
+                new PropertyValueFactory<Mision, String>("nombrePlaneta")
+        );
+
+        colObjetivoMision.setCellValueFactory(
+                new PropertyValueFactory<Mision, String>("objetivo")
+        );
+
+        colIdNaveMision.setCellValueFactory(
+                new PropertyValueFactory<Mision, Nave>("nave")
+        );
+
         cargarMisiones();
+        cargarNavesComboBox();
 
         // Accedemos al sistema de selección de la tabla
         tablaMisiones.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
+
                     if (newValue != null) {
-                        txtPlanetaMision.setText(newValue.getNombrePlaneta());
-                        txtObjetivoMision.setText(newValue.getObjetivo());
-                        txtIdNaveMision.setText(
-                                String.valueOf(newValue.getNave().getIdNave())
+
+                        txtPlanetaMision.setText(
+                                newValue.getNombrePlaneta()
+                        );
+
+                        txtObjetivoMision.setText(
+                                newValue.getObjetivo()
+                        );
+
+                        cbNaveMision.setValue(
+                                newValue.getNave()
                         );
                     }
                 });
+    }
+
+    /**
+     * Carga las naves en el ComboBox
+     */
+    public void cargarNavesComboBox() {
+
+        try {
+
+            cbNaveMision.getItems().clear();
+
+            List<Nave> naves = NaveDAO.findAll();
+
+            for (int i = 0; i < naves.size(); i++) {
+
+                cbNaveMision.getItems().add(
+                        naves.get(i)
+                );
+            }
+
+        } catch (SQLException e) {
+
+            Utils.mostrarError(
+                    "Error",
+                    "No se han podido cargar las naves."
+            );
+        }
     }
 
     /**
@@ -87,7 +137,13 @@ public class MisionController {
      */
     @FXML
     public void limpiarMision(ActionEvent event) {
-        Utils.limpiarCampos(txtIdNaveMision, txtPlanetaMision, txtObjetivoMision);
+
+        Utils.limpiarCampos(
+                txtPlanetaMision,
+                txtObjetivoMision
+        );
+
+        cbNaveMision.setValue(null);
     }
 
     /**
@@ -96,32 +152,54 @@ public class MisionController {
      */
     @FXML
     public void guardarMision(ActionEvent event) {
-        try {
-            if (Utils.campoVacio(txtIdNaveMision) || Utils.campoVacio(txtPlanetaMision) || Utils.campoVacio(txtObjetivoMision)) {
-                Utils.mostrarError("Error", "Debe rellenar todos los campos.");
-            } else {
-                int idNave = Utils.convertirEntero(txtIdNaveMision.getText());
-                if (idNave == -1) {
-                    Utils.mostrarError("Error", "El ID de la nave debe ser un número.");
-                } else {
-                    Nave nave = NaveDAO.findById(idNave);
-                    if (nave == null) {
-                        Utils.mostrarError("Error", "No existe una nave con ese ID.");
-                    } else {
-                        Mision mision = new Mision(0, txtPlanetaMision.getText(), txtObjetivoMision.getText(), nave);
 
-                        if (MisionDAO.addMision(mision)) {
-                            Utils.mostrarMensaje("Información", "Misión guardada correctamente.");
-                            limpiarMision(event);
-                            cargarMisiones();
-                        } else {
-                            Utils.mostrarError("Error", "No se ha podido guardar la misión.");
-                        }
-                    }
+        try {
+
+            if (cbNaveMision.getValue() == null
+                    || Utils.campoVacio(txtPlanetaMision)
+                    || Utils.campoVacio(txtObjetivoMision)) {
+
+                Utils.mostrarError(
+                        "Error",
+                        "Debe rellenar todos los campos."
+                );
+
+            } else {
+
+                Nave nave = cbNaveMision.getValue();
+
+                Mision mision = new Mision(
+                        0,
+                        txtPlanetaMision.getText(),
+                        txtObjetivoMision.getText(),
+                        nave
+                );
+
+                if (MisionDAO.addMision(mision)) {
+
+                    Utils.mostrarMensaje(
+                            "Información",
+                            "Misión guardada correctamente."
+                    );
+
+                    limpiarMision(event);
+                    cargarMisiones();
+
+                } else {
+
+                    Utils.mostrarError(
+                            "Error",
+                            "No se ha podido guardar la misión."
+                    );
                 }
             }
+
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "Error al guardar la misión.");
+
+            Utils.mostrarError(
+                    "Error",
+                    "Error al guardar la misión."
+            );
         }
     }
 
@@ -129,14 +207,26 @@ public class MisionController {
      * Carga todas las misiones en la tabla
      */
     public void cargarMisiones() {
+
         try {
+
             tablaMisiones.getItems().clear();
+
             List<Mision> misiones = MisionDAO.findAll();
+
             for (int i = 0; i < misiones.size(); i++) {
-                tablaMisiones.getItems().add(misiones.get(i));
+
+                tablaMisiones.getItems().add(
+                        misiones.get(i)
+                );
             }
+
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "No se han podido cargar las misiones.");
+
+            Utils.mostrarError(
+                    "Error",
+                    "No se han podido cargar las misiones."
+            );
         }
     }
 
@@ -146,20 +236,45 @@ public class MisionController {
      */
     @FXML
     public void eliminarMision(ActionEvent event) {
+
         try {
-            Mision misionSeleccionada = tablaMisiones.getSelectionModel().getSelectedItem();
+
+            Mision misionSeleccionada =
+                    tablaMisiones.getSelectionModel().getSelectedItem();
+
             if (misionSeleccionada == null) {
-                Utils.mostrarError("Error", "Debe seleccionar una misión.");
+
+                Utils.mostrarError(
+                        "Error",
+                        "Debe seleccionar una misión."
+                );
+
             } else {
+
                 if (MisionDAO.deleteMision(misionSeleccionada)) {
-                    Utils.mostrarMensaje("Información", "Misión eliminada correctamente.");
+
+                    Utils.mostrarMensaje(
+                            "Información",
+                            "Misión eliminada correctamente."
+                    );
+
                     cargarMisiones();
+
                 } else {
-                    Utils.mostrarError("Error", "No se ha podido eliminar la misión.");
+
+                    Utils.mostrarError(
+                            "Error",
+                            "No se ha podido eliminar la misión."
+                    );
                 }
             }
+
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "Error al eliminar la misión.");
+
+            Utils.mostrarError(
+                    "Error",
+                    "Error al eliminar la misión."
+            );
         }
     }
 
@@ -169,6 +284,7 @@ public class MisionController {
      */
     @FXML
     public void actualizarTabla(ActionEvent event) {
+
         cargarMisiones();
     }
 
@@ -178,21 +294,47 @@ public class MisionController {
      */
     @FXML
     public void buscarPorId(ActionEvent event) {
+
         try {
-            int idMision = Utils.convertirEntero(txtBuscarIdMision.getText());
+
+            int idMision =
+                    Utils.convertirEntero(
+                            txtBuscarIdMision.getText()
+                    );
+
             if (idMision == -1) {
-                Utils.mostrarError("Error", "El ID debe ser un número.");
+
+                Utils.mostrarError(
+                        "Error",
+                        "El ID debe ser un número."
+                );
+
             } else {
-                Mision mision = MisionDAO.findById(idMision);
+
+                Mision mision =
+                        MisionDAO.findById(idMision);
+
                 tablaMisiones.getItems().clear();
+
                 if (mision != null) {
+
                     tablaMisiones.getItems().add(mision);
+
                 } else {
-                    Utils.mostrarError("Error", "No existe una misión con ese ID.");
+
+                    Utils.mostrarError(
+                            "Error",
+                            "No existe una misión con ese ID."
+                    );
                 }
             }
+
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "Error al buscar la misión.");
+
+            Utils.mostrarError(
+                    "Error",
+                    "Error al buscar la misión."
+            );
         }
     }
 
@@ -204,21 +346,47 @@ public class MisionController {
     public void buscarPorPlaneta(ActionEvent event) {
 
         try {
+
             if (Utils.campoVacio(txtBuscarPlanetaMision)) {
-                Utils.mostrarError("Error", "Debe escribir un planeta.");
+
+                Utils.mostrarError(
+                        "Error",
+                        "Debe escribir un planeta."
+                );
+
             } else {
-                List<Mision> misiones = MisionDAO.findAllByPlaneta(txtBuscarPlanetaMision.getText());
+
+                List<Mision> misiones =
+                        MisionDAO.findAllByPlaneta(
+                                txtBuscarPlanetaMision.getText()
+                        );
+
                 tablaMisiones.getItems().clear();
+
                 if (!misiones.isEmpty()) {
+
                     for (int i = 0; i < misiones.size(); i++) {
-                        tablaMisiones.getItems().add(misiones.get(i));
+
+                        tablaMisiones.getItems().add(
+                                misiones.get(i)
+                        );
                     }
+
                 } else {
-                    Utils.mostrarError("Error", "No existen misiones para ese planeta.");
+
+                    Utils.mostrarError(
+                            "Error",
+                            "No existen misiones para ese planeta."
+                    );
                 }
             }
+
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "Error al buscar las misiones.");
+
+            Utils.mostrarError(
+                    "Error",
+                    "Error al buscar las misiones."
+            );
         }
     }
 
@@ -228,11 +396,20 @@ public class MisionController {
      * @throws IOException
      */
     @FXML
-    public void volverGestionar(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(PlutonfApplication.class.getResource("/es/franciscodelosrios/plutonf/plutonf/gestionar.fxml"));
+    public void volverGestionar(ActionEvent event)
+            throws IOException {
+
+        FXMLLoader loader = new FXMLLoader(
+                PlutonfApplication.class.getResource(
+                        "/es/franciscodelosrios/plutonf/plutonf/gestionar.fxml"
+                )
+        );
+
         Scene scene = new Scene(loader.load());
+
         Stage stage = (Stage) btnVolverMision.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -242,48 +419,67 @@ public class MisionController {
      */
     @FXML
     public void actualizarMision(ActionEvent event) {
+
         try {
-            Mision misionSeleccionada = tablaMisiones.getSelectionModel().getSelectedItem();
+
+            Mision misionSeleccionada =
+                    tablaMisiones.getSelectionModel().getSelectedItem();
 
             if (misionSeleccionada == null) {
-                Utils.mostrarError("Error", "Debe seleccionar una misión.");
-            } else if (Utils.campoVacio(txtIdNaveMision)
+
+                Utils.mostrarError(
+                        "Error",
+                        "Debe seleccionar una misión."
+                );
+
+            } else if (cbNaveMision.getValue() == null
                     || Utils.campoVacio(txtPlanetaMision)
                     || Utils.campoVacio(txtObjetivoMision)) {
 
-                Utils.mostrarError("Error", "Debe rellenar todos los campos.");
+                Utils.mostrarError(
+                        "Error",
+                        "Debe rellenar todos los campos."
+                );
 
             } else {
-                int idNave = Utils.convertirEntero(txtIdNaveMision.getText());
 
-                if (idNave == -1) {
-                    Utils.mostrarError("Error", "El ID de la nave debe ser un número.");
+                Nave nave = cbNaveMision.getValue();
+
+                Mision misionNueva = new Mision(
+                        misionSeleccionada.getIdMision(),
+                        txtPlanetaMision.getText(),
+                        txtObjetivoMision.getText(),
+                        nave
+                );
+
+                if (MisionDAO.updateMision(
+                        misionNueva,
+                        misionSeleccionada
+                )) {
+
+                    Utils.mostrarMensaje(
+                            "Información",
+                            "Misión actualizada correctamente."
+                    );
+
+                    limpiarMision(event);
+                    cargarMisiones();
+
                 } else {
-                    Nave nave = NaveDAO.findById(idNave);
 
-                    if (nave == null) {
-                        Utils.mostrarError("Error", "No existe una nave con ese ID.");
-                    } else {
-                        Mision misionNueva = new Mision(
-                                misionSeleccionada.getIdMision(),
-                                txtPlanetaMision.getText(),
-                                txtObjetivoMision.getText(),
-                                nave
-                        );
-
-                        if (MisionDAO.updateMision(misionNueva, misionSeleccionada)) {
-                            Utils.mostrarMensaje("Información", "Misión actualizada correctamente.");
-                            limpiarMision(event);
-                            cargarMisiones();
-                        } else {
-                            Utils.mostrarError("Error", "No se ha podido actualizar la misión.");
-                        }
-                    }
+                    Utils.mostrarError(
+                            "Error",
+                            "No se ha podido actualizar la misión."
+                    );
                 }
             }
 
         } catch (SQLException e) {
-            Utils.mostrarError("Error", "Error al actualizar la misión.");
+
+            Utils.mostrarError(
+                    "Error",
+                    "Error al actualizar la misión."
+            );
         }
     }
 }

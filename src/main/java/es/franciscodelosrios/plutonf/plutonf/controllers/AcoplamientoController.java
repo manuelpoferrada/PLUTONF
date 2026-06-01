@@ -181,6 +181,7 @@ public class AcoplamientoController {
 
         Stage stage = (Stage) btnVolverAcoplamiento.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 }

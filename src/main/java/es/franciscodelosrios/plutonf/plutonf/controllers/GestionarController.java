@@ -107,6 +107,7 @@ public class GestionarController {
 
         Stage stage = (Stage) boton.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
     /**
@@ -143,6 +144,7 @@ public class GestionarController {
 
         Stage stage = (Stage) btnAbrirRelaciones.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

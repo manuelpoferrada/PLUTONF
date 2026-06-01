@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="420.0" prefWidth="700.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.RelacionesController" stylesheets="@../../../../css/estilos.css">
+<VBox prefHeight="611.0" prefWidth="939.0" spacing="15.0" stylesheets="@../../../../css/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.franciscodelosrios.plutonf.plutonf.controllers.RelacionesController">
 
     <children>
 
@@ -38,14 +38,14 @@
                 <RowConstraints minHeight="50.0" prefHeight="60.0" />
                 <RowConstraints minHeight="80.0" prefHeight="90.0" />
                 <RowConstraints minHeight="80.0" prefHeight="90.0" />
-            <RowConstraints minHeight="80.0" prefHeight="90.0" />
-            <RowConstraints minHeight="80.0" prefHeight="90.0" />
+                <RowConstraints minHeight="80.0" prefHeight="90.0" />
+                <RowConstraints minHeight="80.0" prefHeight="90.0" />
                 <RowConstraints minHeight="60.0" prefHeight="70.0" />
             </rowConstraints>
 
             <children>
 
-                <Label text="Consultas Relacionales del Sistema" GridPane.columnSpan="2" GridPane.halignment="CENTER">
+                <Label text="Datos del Sistema" GridPane.columnSpan="2" GridPane.halignment="CENTER">
                     <font>
                         <Font name="System Bold" size="20.0" />
                     </font>
@@ -80,13 +80,14 @@
                         <Font name="System Italic" size="11.0" />
                     </font>
                 </Label>
-                <TableView fx:id="tablaConsultas" prefHeight="449.0" prefWidth="314.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.rowSpan="4">
+                <TableView fx:id="tablaConsultas" prefHeight="449.0" prefWidth="314.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.rowSpan="4" GridPane.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="colConsulta1" prefWidth="150.0" text="Dato 1" />
-                        <TableColumn fx:id="colConsulta2" prefWidth="150.0" text="Dato 2" />
+                        <TableColumn fx:id="colConsulta1" prefWidth="151.2000060081482" text="Dato 1" />
+                        <TableColumn fx:id="colConsulta2" prefWidth="212.00006103515625" text="Dato 2" />
+                        <TableColumn fx:id="colConsulta3" prefWidth="197.59994506835938" text="Dato 3" />
                     </columns>
                 </TableView>
-            <Button fx:id="btnVolverConsultas" mnemonicParsing="false" onAction="#volverGestionar" text="Volver" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
+                <Button fx:id="btnVolverConsultas" mnemonicParsing="false" onAction="#volverGestionar" text="Volver" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" GridPane.valignment="BOTTOM" />
             </children>
         </GridPane>
     </children>

@@ -2,6 +2,8 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -63,21 +65,24 @@
                         <RowConstraints minHeight="45.0" prefHeight="55.0" />
                     </rowConstraints>
                     <children>
-                        <Label prefHeight="18.0" prefWidth="115.0" text="ID Mantenimiento:" GridPane.halignment="RIGHT" />
-                        <Label prefHeight="18.0" prefWidth="79.0" text="ID Astronauta:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-                        <Label text="ID Módulo:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+                        <Label prefHeight="18.0" prefWidth="115.0" text="Mantenimiento:" GridPane.halignment="RIGHT" />
+                        <Label prefHeight="18.0" prefWidth="79.0" text="Astronauta:" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+                        <Label text="Módulo:" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
                         <Label text="Fecha:" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
                         <Label text="Observación:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
-                        <TextField fx:id="txtIdMantenimientoIntervencion" promptText="Ej: 1" GridPane.columnIndex="1" />
-                        <TextField fx:id="txtIdAstronautaIntervencion" promptText="Ej: 1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                        <TextField fx:id="txtIdModuloIntervencion" promptText="Ej: 1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtFechaIntervencion" promptText="Ej: 2026-05-12" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <ComboBox fx:id="cbMantenimientoIntervencion" prefWidth="190.0" promptText="Selecciona mantenimiento" GridPane.columnIndex="1" />
+                        <ComboBox fx:id="cbAstronautaIntervencion" prefWidth="190.0" promptText="Selecciona astronauta" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="cbModuloIntervencion" prefWidth="190.0" promptText="Selecciona módulo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <DatePicker fx:id="dpFechaIntervencion" promptText="Selecciona fecha" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <TextField fx:id="txtObservacionesIntervencion" promptText="Ej: Correcto" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
                         <Button fx:id="btnGuardarIntervencion" mnemonicParsing="false" onAction="#guardarIntervencion" prefHeight="32.0" prefWidth="72.0" text="Guardar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
-                        <Button fx:id="btnLimpiarIntervencion" mnemonicParsing="false" onAction="#limpiarIntervencion" prefHeight="32.0" prefWidth="58.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
-                     <GridPane.margin>
-                        <Insets right="30.0" />
-                     </GridPane.margin></Button>
+                        <Button fx:id="btnLimpiarIntervencion" mnemonicParsing="false" onAction="#limpiarIntervencion" prefHeight="32.0" prefWidth="71.0" text="Limpiar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5">
+                            <GridPane.margin>
+                                <Insets right="50.0" />
+                            </GridPane.margin>
+                        </Button>
                     </children>
                 </GridPane>
                 <TableView fx:id="tablaIntervenciones" prefHeight="280.0" prefWidth="300.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
@@ -102,22 +107,25 @@
                         <TextField fx:id="txtBuscarIdIntervencion" promptText="Buscar por ID" />
                         <Button fx:id="btnBuscarIdIntervencion" mnemonicParsing="false" onAction="#buscarPorId" prefHeight="30.0" prefWidth="65.0" text="Buscar" GridPane.columnIndex="1" />
                     </children>
-               <rowConstraints>
-                  <RowConstraints />
-               </rowConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
-                <Button fx:id="btnEliminarIntervencion" mnemonicParsing="false" onAction="#eliminarIntervencion" prefHeight="30.0" prefWidth="80.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                <Button fx:id="btnEliminarIntervencion" mnemonicParsing="false" onAction="#eliminarIntervencion" prefHeight="30.0" prefWidth="139.0" text="Eliminar" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
                 </Button>
-                <Button fx:id="btnActualizarIntervencion" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="85.0" text="Actualizar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                <Button fx:id="btnActualizarIntervencion" mnemonicParsing="false" onAction="#actualizarTabla" prefHeight="30.0" prefWidth="144.0" text="Recargar Tabla" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                     <GridPane.margin>
                         <Insets />
                     </GridPane.margin>
                 </Button>
                 <Button fx:id="btnVolverIntervencion" mnemonicParsing="false" onAction="#volverMantenimiento" prefHeight="30.0" prefWidth="90.0" text="Volver" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-            <Button fx:id="btnActualizarIntervencionDeLaTabla" mnemonicParsing="false" onAction="#actualizarIntervencion" prefHeight="30.0" prefWidth="90.0" text="Guar. Actualización" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Button fx:id="btnActualizarIntervencionDeLaTabla" mnemonicParsing="false" onAction="#actualizarIntervencion" prefHeight="30.0" prefWidth="151.0" text="Guar. Actualización" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin></Button>
             </children>
         </GridPane>
     </children>

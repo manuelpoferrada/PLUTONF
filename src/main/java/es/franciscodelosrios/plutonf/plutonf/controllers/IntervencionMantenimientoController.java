@@ -15,6 +15,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -23,24 +26,24 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
 public class IntervencionMantenimientoController {
 
     @FXML
-    private TextField txtIdMantenimientoIntervencion;
+    private ComboBox<Mantenimiento> cbMantenimientoIntervencion;
 
     @FXML
-    private TextField txtIdAstronautaIntervencion;
+    private ComboBox<Astronauta> cbAstronautaIntervencion;
 
     @FXML
-    private TextField txtIdModuloIntervencion;
+    private ComboBox<Modulo> cbModuloIntervencion;
 
     @FXML
-    private TextField txtFechaIntervencion;
+    private DatePicker dpFechaIntervencion;
 
     @FXML
     private TextField txtObservacionesIntervencion;
@@ -83,6 +86,15 @@ public class IntervencionMantenimientoController {
         colMantenimientoIntervencion.setCellValueFactory(new PropertyValueFactory<IntervencionMantenimiento, Mantenimiento>("mantenimiento"));
         colAstronautaIntervencion.setCellValueFactory(new PropertyValueFactory<IntervencionMantenimiento, Astronauta>("astronauta"));
         colModuloIntervencion.setCellValueFactory(new PropertyValueFactory<IntervencionMantenimiento, Modulo>("modulo"));
+
+        configurarComboBoxMantenimientos();
+        configurarComboBoxAstronautas();
+        configurarComboBoxModulos();
+
+        cargarMantenimientosComboBox();
+        cargarAstronautasComboBox();
+        cargarModulosComboBox();
+
         cargarIntervenciones();
 
         // Accedemos al sistema de selección de la tabla
@@ -90,19 +102,178 @@ public class IntervencionMantenimientoController {
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
-                        txtIdMantenimientoIntervencion.setText(
-                                String.valueOf(newValue.getMantenimiento().getIdMantenimiento())
-                        );
-                        txtIdAstronautaIntervencion.setText(
-                                String.valueOf(newValue.getAstronauta().getIdAstronauta())
-                        );
-                        txtIdModuloIntervencion.setText(
-                                String.valueOf(newValue.getModulo().getIdModulo())
-                        );
-                        txtFechaIntervencion.setText(String.valueOf(newValue.getFechaIntervencion()));
+
+                        cbMantenimientoIntervencion.setValue(newValue.getMantenimiento());
+                        cbAstronautaIntervencion.setValue(newValue.getAstronauta());
+                        cbModuloIntervencion.setValue(newValue.getModulo());
+
+                        if (newValue.getFechaIntervencion() != null) {
+                            if (newValue.getFechaIntervencion() instanceof java.sql.Date) {
+                                dpFechaIntervencion.setValue(
+                                        ((java.sql.Date) newValue.getFechaIntervencion()).toLocalDate()
+                                );
+                            } else {
+                                dpFechaIntervencion.setValue(
+                                        newValue.getFechaIntervencion()
+                                                .toInstant()
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate()
+                                );
+                            }
+                        } else {
+                            dpFechaIntervencion.setValue(null);
+                        }
+
                         txtObservacionesIntervencion.setText(newValue.getObservaciones());
                     }
                 });
+    }
+
+    /**
+     * Configura como se muestran los mantenimientos en el ComboBox
+     */
+    public void configurarComboBoxMantenimientos() {
+        cbMantenimientoIntervencion.setCellFactory(param -> new ListCell<Mantenimiento>() {
+            @Override
+            protected void updateItem(Mantenimiento mantenimiento, boolean empty) {
+                super.updateItem(mantenimiento, empty);
+
+                if (empty || mantenimiento == null) {
+                    setText(null);
+                } else {
+                    setText(mantenimiento.getIdMantenimiento() + " - " + mantenimiento.getDescripcion());
+                }
+            }
+        });
+
+        cbMantenimientoIntervencion.setButtonCell(new ListCell<Mantenimiento>() {
+            @Override
+            protected void updateItem(Mantenimiento mantenimiento, boolean empty) {
+                super.updateItem(mantenimiento, empty);
+
+                if (empty || mantenimiento == null) {
+                    setText(null);
+                } else {
+                    setText(mantenimiento.getIdMantenimiento() + " - " + mantenimiento.getDescripcion());
+                }
+            }
+        });
+    }
+
+    /**
+     * Configura como se muestran los astronautas en el ComboBox
+     */
+    public void configurarComboBoxAstronautas() {
+        cbAstronautaIntervencion.setCellFactory(param -> new ListCell<Astronauta>() {
+            @Override
+            protected void updateItem(Astronauta astronauta, boolean empty) {
+                super.updateItem(astronauta, empty);
+
+                if (empty || astronauta == null) {
+                    setText(null);
+                } else {
+                    setText(astronauta.getIdAstronauta() + " - " + astronauta.getNombre());
+                }
+            }
+        });
+
+        cbAstronautaIntervencion.setButtonCell(new ListCell<Astronauta>() {
+            @Override
+            protected void updateItem(Astronauta astronauta, boolean empty) {
+                super.updateItem(astronauta, empty);
+
+                if (empty || astronauta == null) {
+                    setText(null);
+                } else {
+                    setText(astronauta.getIdAstronauta() + " - " + astronauta.getNombre());
+                }
+            }
+        });
+    }
+
+    /**
+     * Configura como se muestran los modulos en el ComboBox
+     */
+    public void configurarComboBoxModulos() {
+        cbModuloIntervencion.setCellFactory(param -> new ListCell<Modulo>() {
+            @Override
+            protected void updateItem(Modulo modulo, boolean empty) {
+                super.updateItem(modulo, empty);
+
+                if (empty || modulo == null) {
+                    setText(null);
+                } else {
+                    setText(modulo.getIdModulo() + " - " + modulo.getNombre());
+                }
+            }
+        });
+
+        cbModuloIntervencion.setButtonCell(new ListCell<Modulo>() {
+            @Override
+            protected void updateItem(Modulo modulo, boolean empty) {
+                super.updateItem(modulo, empty);
+
+                if (empty || modulo == null) {
+                    setText(null);
+                } else {
+                    setText(modulo.getIdModulo() + " - " + modulo.getNombre());
+                }
+            }
+        });
+    }
+
+    /**
+     * Carga los mantenimientos en el ComboBox
+     */
+    public void cargarMantenimientosComboBox() {
+        try {
+            cbMantenimientoIntervencion.getItems().clear();
+
+            List<Mantenimiento> mantenimientos = MantenimientoDAO.findAll();
+
+            for (int i = 0; i < mantenimientos.size(); i++) {
+                cbMantenimientoIntervencion.getItems().add(mantenimientos.get(i));
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "No se han podido cargar los mantenimientos.");
+        }
+    }
+
+    /**
+     * Carga los astronautas en el ComboBox
+     */
+    public void cargarAstronautasComboBox() {
+        try {
+            cbAstronautaIntervencion.getItems().clear();
+
+            List<Astronauta> astronautas = AstronautaDAO.findAll();
+
+            for (int i = 0; i < astronautas.size(); i++) {
+                cbAstronautaIntervencion.getItems().add(astronautas.get(i));
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "No se han podido cargar los astronautas.");
+        }
+    }
+
+    /**
+     * Carga los modulos en el ComboBox
+     */
+    public void cargarModulosComboBox() {
+        try {
+            cbModuloIntervencion.getItems().clear();
+
+            List<Modulo> modulos = ModuloDAO.findAll();
+
+            for (int i = 0; i < modulos.size(); i++) {
+                cbModuloIntervencion.getItems().add(modulos.get(i));
+            }
+
+        } catch (SQLException e) {
+            Utils.mostrarError("Error", "No se han podido cargar los módulos.");
+        }
     }
 
     /**
@@ -112,12 +283,13 @@ public class IntervencionMantenimientoController {
     @FXML
     public void limpiarIntervencion(ActionEvent event) {
         Utils.limpiarCampos(
-                txtIdMantenimientoIntervencion,
-                txtIdAstronautaIntervencion,
-                txtIdModuloIntervencion,
-                txtFechaIntervencion,
                 txtObservacionesIntervencion
         );
+
+        cbMantenimientoIntervencion.setValue(null);
+        cbAstronautaIntervencion.setValue(null);
+        cbModuloIntervencion.setValue(null);
+        dpFechaIntervencion.setValue(null);
     }
 
     /**
@@ -127,59 +299,41 @@ public class IntervencionMantenimientoController {
     @FXML
     public void guardarIntervencion(ActionEvent event) {
         try {
-            if (Utils.campoVacio(txtIdMantenimientoIntervencion)
-                    || Utils.campoVacio(txtIdAstronautaIntervencion)
-                    || Utils.campoVacio(txtIdModuloIntervencion)
-                    || Utils.campoVacio(txtFechaIntervencion)
+            if (cbMantenimientoIntervencion.getValue() == null
+                    || cbAstronautaIntervencion.getValue() == null
+                    || cbModuloIntervencion.getValue() == null
+                    || dpFechaIntervencion.getValue() == null
                     || Utils.campoVacio(txtObservacionesIntervencion)) {
 
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
 
             } else {
-                int idMantenimiento = Utils.convertirEntero(txtIdMantenimientoIntervencion.getText());
-                int idAstronauta = Utils.convertirEntero(txtIdAstronautaIntervencion.getText());
-                int idModulo = Utils.convertirEntero(txtIdModuloIntervencion.getText());
+                Mantenimiento mantenimiento = cbMantenimientoIntervencion.getValue();
+                Astronauta astronauta = cbAstronautaIntervencion.getValue();
+                Modulo modulo = cbModuloIntervencion.getValue();
 
-                if (idMantenimiento == -1 || idAstronauta == -1 || idModulo == -1) {
-                    Utils.mostrarError("Error", "Los ID deben ser números.");
+                LocalDate localDate = dpFechaIntervencion.getValue();
+                Date fecha = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                IntervencionMantenimiento intervencion = new IntervencionMantenimiento(
+                        0,
+                        mantenimiento,
+                        astronauta,
+                        modulo,
+                        fecha,
+                        txtObservacionesIntervencion.getText()
+                );
+
+                if (IntervencionMantenimientoDAO.addIntervencion(intervencion)) {
+                    Utils.mostrarMensaje("Información", "Intervención guardada correctamente.");
+                    limpiarIntervencion(event);
+                    cargarIntervenciones();
                 } else {
-                    Mantenimiento mantenimiento = MantenimientoDAO.findById(idMantenimiento);
-                    Astronauta astronauta = AstronautaDAO.findById(idAstronauta);
-                    Modulo modulo = ModuloDAO.findById(idModulo);
-
-                    if (mantenimiento == null) {
-                        Utils.mostrarError("Error", "No existe un mantenimiento con ese ID.");
-                    } else if (astronauta == null) {
-                        Utils.mostrarError("Error", "No existe un astronauta con ese ID.");
-                    } else if (modulo == null) {
-                        Utils.mostrarError("Error", "No existe un módulo con ese ID.");
-                    } else {
-                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-                        Date fecha = formato.parse(txtFechaIntervencion.getText());
-
-                        IntervencionMantenimiento intervencion = new IntervencionMantenimiento(
-                                0,
-                                mantenimiento,
-                                astronauta,
-                                modulo,
-                                fecha,
-                                txtObservacionesIntervencion.getText()
-                        );
-
-                        if (IntervencionMantenimientoDAO.addIntervencion(intervencion)) {
-                            Utils.mostrarMensaje("Información", "Intervención guardada correctamente.");
-                            limpiarIntervencion(event);
-                            cargarIntervenciones();
-                        } else {
-                            Utils.mostrarError("Error", "No se ha podido guardar la intervención.");
-                        }
-                    }
+                    Utils.mostrarError("Error", "No se ha podido guardar la intervención.");
                 }
             }
         } catch (SQLException e) {
             Utils.mostrarError("Error", "Error al guardar la intervención.");
-        } catch (ParseException e) {
-            Utils.mostrarError("Error", "La fecha debe tener el formato yyyy-MM-dd.");
         }
     }
 
@@ -231,6 +385,9 @@ public class IntervencionMantenimientoController {
      */
     @FXML
     public void actualizarTabla(ActionEvent event) {
+        cargarMantenimientosComboBox();
+        cargarAstronautasComboBox();
+        cargarModulosComboBox();
         cargarIntervenciones();
     }
 
@@ -273,6 +430,7 @@ public class IntervencionMantenimientoController {
 
         Stage stage = (Stage) btnVolverIntervencion.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -287,60 +445,42 @@ public class IntervencionMantenimientoController {
 
             if (intervencionSeleccionada == null) {
                 Utils.mostrarError("Error", "Debe seleccionar una intervención.");
-            } else if (Utils.campoVacio(txtIdMantenimientoIntervencion)
-                    || Utils.campoVacio(txtIdAstronautaIntervencion)
-                    || Utils.campoVacio(txtIdModuloIntervencion)
-                    || Utils.campoVacio(txtFechaIntervencion)
+            } else if (cbMantenimientoIntervencion.getValue() == null
+                    || cbAstronautaIntervencion.getValue() == null
+                    || cbModuloIntervencion.getValue() == null
+                    || dpFechaIntervencion.getValue() == null
                     || Utils.campoVacio(txtObservacionesIntervencion)) {
 
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
 
             } else {
-                int idMantenimiento = Utils.convertirEntero(txtIdMantenimientoIntervencion.getText());
-                int idAstronauta = Utils.convertirEntero(txtIdAstronautaIntervencion.getText());
-                int idModulo = Utils.convertirEntero(txtIdModuloIntervencion.getText());
+                Mantenimiento mantenimiento = cbMantenimientoIntervencion.getValue();
+                Astronauta astronauta = cbAstronautaIntervencion.getValue();
+                Modulo modulo = cbModuloIntervencion.getValue();
 
-                if (idMantenimiento == -1 || idAstronauta == -1 || idModulo == -1) {
-                    Utils.mostrarError("Error", "Los ID deben ser números.");
+                LocalDate localDate = dpFechaIntervencion.getValue();
+                Date fecha = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+
+                IntervencionMantenimiento intervencionNueva = new IntervencionMantenimiento(
+                        intervencionSeleccionada.getIdIntervencion(),
+                        mantenimiento,
+                        astronauta,
+                        modulo,
+                        fecha,
+                        txtObservacionesIntervencion.getText()
+                );
+
+                if (IntervencionMantenimientoDAO.updateIntervencion(intervencionNueva, intervencionSeleccionada)) {
+                    Utils.mostrarMensaje("Información", "Intervención actualizada correctamente.");
+                    limpiarIntervencion(event);
+                    cargarIntervenciones();
                 } else {
-                    Mantenimiento mantenimiento = MantenimientoDAO.findById(idMantenimiento);
-                    Astronauta astronauta = AstronautaDAO.findById(idAstronauta);
-                    Modulo modulo = ModuloDAO.findById(idModulo);
-
-                    if (mantenimiento == null) {
-                        Utils.mostrarError("Error", "No existe un mantenimiento con ese ID.");
-                    } else if (astronauta == null) {
-                        Utils.mostrarError("Error", "No existe un astronauta con ese ID.");
-                    } else if (modulo == null) {
-                        Utils.mostrarError("Error", "No existe un módulo con ese ID.");
-                    } else {
-                        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-                        Date fecha = formato.parse(txtFechaIntervencion.getText());
-
-                        IntervencionMantenimiento intervencionNueva = new IntervencionMantenimiento(
-                                intervencionSeleccionada.getIdIntervencion(),
-                                mantenimiento,
-                                astronauta,
-                                modulo,
-                                fecha,
-                                txtObservacionesIntervencion.getText()
-                        );
-
-                        if (IntervencionMantenimientoDAO.updateIntervencion(intervencionNueva, intervencionSeleccionada)) {
-                            Utils.mostrarMensaje("Información", "Intervención actualizada correctamente.");
-                            limpiarIntervencion(event);
-                            cargarIntervenciones();
-                        } else {
-                            Utils.mostrarError("Error", "No se ha podido actualizar la intervención.");
-                        }
-                    }
+                    Utils.mostrarError("Error", "No se ha podido actualizar la intervención.");
                 }
             }
 
         } catch (SQLException e) {
             Utils.mostrarError("Error", "Error al actualizar la intervención.");
-        } catch (ParseException e) {
-            Utils.mostrarError("Error", "La fecha debe tener el formato yyyy-MM-dd.");
         }
     }
 }

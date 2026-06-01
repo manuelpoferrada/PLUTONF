@@ -53,6 +53,7 @@ public class InicioController {
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) btnCrearMisionInicio.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -67,6 +68,7 @@ public class InicioController {
         Scene scene = new Scene(loader.load());
         Stage stage = (Stage) btnGestionarInicio.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 

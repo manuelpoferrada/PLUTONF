@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -17,8 +18,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class NavesController {
     private TextField txtCombustibleNave;
 
     @FXML
-    private TextField txtFechaNave;
+    private DatePicker dpFechaNave;
 
     @FXML
     private TextField txtEstadoNave;
@@ -87,10 +88,28 @@ public class NavesController {
                 .selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     if (newValue != null) {
+
                         txtNombreNave.setText(newValue.getNombre());
                         txtAlcanceNave.setText(String.valueOf(newValue.getAlcance()));
                         txtCombustibleNave.setText(String.valueOf(newValue.getCombustibleActual()));
-                        txtFechaNave.setText(String.valueOf(newValue.getFechaLanzamiento()));
+
+                        if (newValue.getFechaLanzamiento() != null) {
+                            if (newValue.getFechaLanzamiento() instanceof java.sql.Date) {
+                                dpFechaNave.setValue(
+                                        ((java.sql.Date) newValue.getFechaLanzamiento()).toLocalDate()
+                                );
+                            } else {
+                                dpFechaNave.setValue(
+                                        newValue.getFechaLanzamiento()
+                                                .toInstant()
+                                                .atZone(ZoneId.systemDefault())
+                                                .toLocalDate()
+                                );
+                            }
+                        } else {
+                            dpFechaNave.setValue(null);
+                        }
+
                         txtEstadoNave.setText(newValue.getEstadoNave());
                     }
                 });
@@ -102,7 +121,8 @@ public class NavesController {
      */
     @FXML
     public void limpiarNave(ActionEvent event) {
-        Utils.limpiarCampos(txtNombreNave, txtAlcanceNave, txtCombustibleNave, txtFechaNave, txtEstadoNave);
+        Utils.limpiarCampos(txtNombreNave, txtAlcanceNave, txtCombustibleNave, txtEstadoNave);
+        dpFechaNave.setValue(null);
     }
 
     /**
@@ -112,7 +132,7 @@ public class NavesController {
     @FXML
     public void guardarNave(ActionEvent event) {
         try {
-            if (Utils.campoVacio(txtNombreNave) || Utils.campoVacio(txtAlcanceNave) || Utils.campoVacio(txtCombustibleNave) || Utils.campoVacio(txtFechaNave) || Utils.campoVacio(txtEstadoNave)) {
+            if (Utils.campoVacio(txtNombreNave) || Utils.campoVacio(txtAlcanceNave) || Utils.campoVacio(txtCombustibleNave) || dpFechaNave.getValue() == null || Utils.campoVacio(txtEstadoNave)) {
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
             } else {
                 double alcance = Utils.convertirDouble(txtAlcanceNave.getText());
@@ -121,8 +141,8 @@ public class NavesController {
                 if (alcance == -1 || combustible == -1) {
                     Utils.mostrarError("Error", "El alcance y el combustible deben ser números.");
                 } else {
-                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-                    Date fecha = formato.parse(txtFechaNave.getText());
+                    LocalDate localDate = dpFechaNave.getValue();
+                    Date fecha = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
                     Nave nave = new Nave(
                             0,
@@ -144,8 +164,6 @@ public class NavesController {
             }
         } catch (SQLException e) {
             Utils.mostrarError("Error", "Error al guardar la nave.");
-        } catch (ParseException e) {
-            Utils.mostrarError("Error", "La fecha debe tener el formato yyyy-MM-dd.");
         }
     }
 
@@ -264,6 +282,7 @@ public class NavesController {
 
         Stage stage = (Stage) btnVolverNave.getScene().getWindow();
         stage.setScene(scene);
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -281,7 +300,7 @@ public class NavesController {
             } else if (Utils.campoVacio(txtNombreNave)
                     || Utils.campoVacio(txtAlcanceNave)
                     || Utils.campoVacio(txtCombustibleNave)
-                    || Utils.campoVacio(txtFechaNave)
+                    || dpFechaNave.getValue() == null
                     || Utils.campoVacio(txtEstadoNave)) {
 
                 Utils.mostrarError("Error", "Debe rellenar todos los campos.");
@@ -293,8 +312,8 @@ public class NavesController {
                 if (alcance == -1 || combustible == -1) {
                     Utils.mostrarError("Error", "El alcance y el combustible deben ser números.");
                 } else {
-                    SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-                    Date fecha = formato.parse(txtFechaNave.getText());
+                    LocalDate localDate = dpFechaNave.getValue();
+                    Date fecha = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
                     Nave naveNueva = new Nave(
                             naveSeleccionada.getIdNave(),
@@ -317,8 +336,6 @@ public class NavesController {
 
         } catch (SQLException e) {
             Utils.mostrarError("Error", "Error al actualizar la nave.");
-        } catch (ParseException e) {
-            Utils.mostrarError("Error", "La fecha debe tener el formato yyyy-MM-dd.");
         }
     }
 
