@@ -140,6 +140,7 @@ public class RelacionesController {
                 );
 
                 tablaConsultas.getItems().add(consulta);
+
             }
 
         } catch (SQLException e) {
